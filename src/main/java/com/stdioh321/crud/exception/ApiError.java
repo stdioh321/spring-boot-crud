@@ -13,6 +13,8 @@ public class ApiError {
 
     private String exception;
     private String message;
+    private String rejectedValue;
+    private String object;
     private String debubMessage;
     private List<ApiSubError> subErrors;
 

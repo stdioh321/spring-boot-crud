@@ -1,5 +1,6 @@
 package com.stdioh321.crud.config;
 
+import com.stdioh321.crud.repository.CityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +20,7 @@ import java.util.HashMap;
 import java.util.Optional;
 
 @Configuration
-@EnableJpaRepositories(basePackages = "com.stdioh321.crud.repository", entityManagerFactoryRef = "db1EntityManager", transactionManagerRef = "db1TranscationManager")
+@EnableJpaRepositories(basePackageClasses = {CityRepository.class}, entityManagerFactoryRef = "db1EntityManager", transactionManagerRef = "db1TranscationManager")
 @PropertySource("classpath:persistence-multiple-db.properties")
 @EnableJpaAuditing(auditorAwareRef = "auditorProvider")
 

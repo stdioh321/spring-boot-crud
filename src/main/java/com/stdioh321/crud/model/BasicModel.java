@@ -31,6 +31,7 @@ public abstract class BasicModel {
     private Date deletedAt;
 
     public BasicModel updateOnlyNotNull(BasicModel entity, String[] fieldsToIgnore) {
+        if(Objects.isNull(fieldsToIgnore)) fieldsToIgnore = new String[]{};
         if (!getClass().equals(entity.getClass())) {
             return null;
         }

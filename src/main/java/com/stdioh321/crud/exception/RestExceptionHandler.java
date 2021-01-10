@@ -35,4 +35,11 @@ public class RestExceptionHandler {
         apiError.setSubErrors(subErrors);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
+    @ExceptionHandler({EntityGenericExecption.class})
+    protected ResponseEntity handleEntityNotFoundException(EntityGenericExecption ex) {
+        ApiError apiError = new ApiError(ex.getStatus(), ex.getMessage(),ex);
+        apiError.setRejectedValue(ex.getRejectedValue());
+        apiError.setObject(ex.getObject());
+        return ResponseEntity.status(ex.getStatus()).body(apiError);
+    }
 }
