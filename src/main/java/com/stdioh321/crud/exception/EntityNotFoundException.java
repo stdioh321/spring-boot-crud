@@ -1,11 +1,19 @@
 package com.stdioh321.crud.exception;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
+import org.springframework.http.HttpStatus;
 
-public class EntityNotFoundException{
+@Data
+public class EntityNotFoundException extends RuntimeException {
+    private String message;
+    private String rejectedValue;
+    private String object;
+    private HttpStatus status = HttpStatus.NOT_FOUND;
+
+    public EntityNotFoundException(String rejectedValue, String object) {
+        message = "Entity not found";
+        this.rejectedValue = rejectedValue;
+        this.object = object;
+    }
 
 }

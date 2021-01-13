@@ -1,10 +1,10 @@
 package com.stdioh321.crud.service;
 
-import com.stdioh321.crud.exception.EntityGenericExecption;
+import com.stdioh321.crud.exception.RestNotFoundException;
 import com.stdioh321.crud.model.City;
 import com.stdioh321.crud.repository.CityRepository;
+import com.stdioh321.crud.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public class CityService implements BasicService<City, UUID> {
     public City delete(UUID id) {
         var tmpCity = cityRepository.findById(id);
         if (tmpCity.isEmpty()) {
-            throw new EntityGenericExecption("City Not Found", id.toString(), City.class.getSimpleName(), HttpStatus.NOT_FOUND);
+            throw new RestNotFoundException(id.toString(), City.class);
         }
         cityRepository.delete(tmpCity.get());
         cityRepository.flush();
@@ -34,11 +34,15 @@ public class CityService implements BasicService<City, UUID> {
     @Override
     public City put(UUID id, City entity) {
         var tmpCity = cityRepository.findById(id);
-        if(tmpCity.isEmpty()){
-            throw new EntityGenericExecption("City not Found", id.toString(), City.class.getSimpleName(), HttpStatus.NOT_FOUND);
+        if (tmpCity.isEmpty()) {
+            throw new RestNotFoundException(id.toString(), City.class);
         }
         var currCity = tmpCity.get();
-        currCity.updateOnlyNotNull(entity,null);
+         try {
+             currCity = Utils.mergeObjects(tmpCity.get(), entity);
+         }catch (Exception e){
+
+         }
 
         return cityRepository.saveAndFlush(currCity);
     }
@@ -49,9 +53,8 @@ public class CityService implements BasicService<City, UUID> {
     }
 
 
-
     public List<City> getByFieldQuery(String q, String fields) {
-        return cityRepository.findByFieldQuery(fields,q,null);
+        return cityRepository.findByFieldQuery(fields, q, null);
     }
 
 
@@ -64,7 +67,7 @@ public class CityService implements BasicService<City, UUID> {
     public City getById(UUID id) {
         var tmpCity = cityRepository.findById(id);
         if (tmpCity.isEmpty())
-            throw new EntityGenericExecption("City not Found", id.toString(), City.class.getSimpleName(), HttpStatus.NOT_FOUND);
+            throw new RestNotFoundException(id.toString(), City.class);
         return tmpCity.get();
     }
 }

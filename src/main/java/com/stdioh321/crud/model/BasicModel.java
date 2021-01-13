@@ -26,9 +26,14 @@ public abstract class BasicModel {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date updatedAt;
 
+
     @Column(name = "deleted_at")
+
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date deletedAt;
+
+
+
 
     public BasicModel updateOnlyNotNull(BasicModel entity, String[] fieldsToIgnore) {
         if(Objects.isNull(fieldsToIgnore)) fieldsToIgnore = new String[]{};

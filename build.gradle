@@ -1,8 +1,8 @@
 plugins {
-	id 'org.springframework.boot' version '2.4.1'
-	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-	id 'java'
-	id 'war'
+    id 'org.springframework.boot' version '2.4.1'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'java'
+    id 'war'
 }
 
 group = 'com.stdioh321'
@@ -10,40 +10,45 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
+
+    /*https://maven.addstar.com.au/artifactory/all-snapshot/*/
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	annotationProcessor 'org.projectlombok:lombok'
-	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'io.projectreactor:reactor-test'
-	compile 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.projectlombok:lombok'
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 
-	compile group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
+    compile group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
 
-	compile 'com.h2database:h2'
-	compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.27.Final'
-	compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.4.27.Final'
+    compile 'com.h2database:h2'
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.27.Final'
+    compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.4.27.Final'
 
-	compile group: 'javax.inject', name: 'javax.inject', version: '1'
-	providedCompile group: 'javax.enterprise', name: 'cdi-api', version: '2.0.SP1'
-	compile group: 'org.reflections', name: 'reflections', version: '0.9.12'
+    compile group: 'javax.inject', name: 'javax.inject', version: '1'
+    providedCompile group: 'javax.enterprise', name: 'cdi-api', version: '2.0.SP1'
+    compile group: 'org.reflections', name: 'reflections', version: '0.9.12'
+    // https://mvnrepository.com/artifact/pl.powermilk/jpa-soft-delete-spring-boot-starter
+
+    compile group: 'pl.powermilk', name: 'jpa-soft-delete-spring-boot-starter', version: '1.0.0.RELEASE'
 
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }

@@ -1,7 +1,11 @@
 package com.stdioh321.crud.utils;
 
+import com.stdioh321.crud.model.BasicModel;
+import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import pl.powermilk.jpa.soft.delete.repository.SoftDelete;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -9,7 +13,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
-public interface IRepositoryExtender<T, U> extends JpaRepository<T, U> {
+public interface IRepositoryExtender<T , U> extends JpaRepository<T , U> {
+
+
 
     default public List findByQuery(String q, List<?> all) {
         if (Objects.isNull(all)) {

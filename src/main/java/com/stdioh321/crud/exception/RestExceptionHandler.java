@@ -24,7 +24,7 @@ public class RestExceptionHandler {
 
     @ExceptionHandler({EntityValidationException.class})
     protected ResponseEntity handleEntityValidationException(EntityValidationException ex) {
-        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, "Validation Error",ex);
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, "Validation Error", ex);
         List<ApiSubError> subErrors = new ArrayList<>();
         for (FieldError fieldError : ex.getErrors()) {
             ApiSubError subError = new ApiSubError(fieldError.getObjectName(), fieldError.getDefaultMessage());
@@ -35,9 +35,26 @@ public class RestExceptionHandler {
         apiError.setSubErrors(subErrors);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
-    @ExceptionHandler({EntityGenericExecption.class})
-    protected ResponseEntity handleEntityNotFoundException(EntityGenericExecption ex) {
-        ApiError apiError = new ApiError(ex.getStatus(), ex.getMessage(),ex);
+
+    @ExceptionHandler({RestGenericExecption.class})
+    protected ResponseEntity handleEntityNotFoundException(RestGenericExecption ex) {
+        ApiError apiError = new ApiError(ex.getStatus(), ex.getMessage(), ex.getDebugMessage(), ex);
+        apiError.setRejectedValue(ex.getRejectedValue());
+        apiError.setObject(ex.getObject());
+        return ResponseEntity.status(ex.getStatus()).body(apiError);
+    }
+
+    @ExceptionHandler({DataPersistenceGenericException.class})
+    protected ResponseEntity handleDataPersistenceGenericException(DataPersistenceGenericException ex) {
+        ApiError apiError = new ApiError(ex.getStatus(), ex.getMessage(), ex.getDebugMessage(), ex);
+        apiError.setRejectedValue(ex.getRejectedValue());
+        apiError.setObject(ex.getObject());
+        return ResponseEntity.status(ex.getStatus()).body(apiError);
+    }
+
+    @ExceptionHandler({EntityNotFoundException.class})
+    protected ResponseEntity handleEntityNotFoundException(EntityNotFoundException ex) {
+        ApiError apiError = new ApiError(ex.getStatus(), ex.getMessage(), ex);
         apiError.setRejectedValue(ex.getRejectedValue());
         apiError.setObject(ex.getObject());
         return ResponseEntity.status(ex.getStatus()).body(apiError);
