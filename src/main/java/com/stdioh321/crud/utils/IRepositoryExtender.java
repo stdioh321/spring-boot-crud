@@ -2,8 +2,11 @@ package com.stdioh321.crud.utils;
 
 import com.stdioh321.crud.model.BasicModel;
 import org.hibernate.annotations.Where;
+import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import pl.powermilk.jpa.soft.delete.repository.SoftDelete;
 
@@ -13,8 +16,34 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
-public interface IRepositoryExtender<T , U> extends JpaRepository<T , U> {
+public interface IRepositoryExtender<T extends BasicModel, U> extends JpaRepository<T, U> {
 
+    @Override
+    @Query("SELECT e FROM #{#entityName} e WHERE deleted_at IS NULL")
+    List<T> findAll();
+
+    @Override
+    @Query("SELECT e FROM #{#entityName} e WHERE id = ?1 AND  deleted_at IS NULL ")
+    Optional<T> findById(U u);
+
+    @Query("SELECT e FROM #{#entityName} e WHERE deleted_at <> NULL")
+    List<T> findTrashed();
+
+    @Query("SELECT e FROM #{#entityName} e WHERE id = ?1 AND  deleted_at <> NULL ")
+    Optional<T> findTrashedById(U u);
+
+    @Query("UPDATE #{#entityName} e SET deleted_at = NULL WHERE e.id = :id")
+    @Modifying
+    default Optional<T> restore(@Param("id") U u){
+        System.out.println(u);
+        var opt = findTrashedById(u);
+        if (opt.isEmpty()) return opt;
+        var ent = opt.get();
+
+        ent.setDeletedAt(null);
+        ent = saveAndFlush(ent);
+        return Optional.of(ent);
+    }
 
 
     default public List findByQuery(String q, List<?> all) {

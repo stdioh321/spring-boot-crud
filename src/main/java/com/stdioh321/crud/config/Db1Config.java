@@ -46,7 +46,7 @@ public class Db1Config {
         dataSource.setUrl(env.getProperty("db1.url"));
         dataSource.setUsername(env.getProperty("db1.user"));
         dataSource.setPassword(env.getProperty("db1.pass"));
-        return dataSource;
+        return dataSource   ;
     }
 
     @Bean

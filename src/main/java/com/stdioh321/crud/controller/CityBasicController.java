@@ -17,10 +17,6 @@ import java.util.UUID;
 @RequestMapping("${api.url}/simple-city")
 public class CityBasicController extends BasicController<City, UUID> {
 
-    @PersistenceContext(name = "db1EntityManager")
-    private EntityManager em;
-
-
     @Autowired
     public CityBasicController(CityRepository repository) {
         super(repository);

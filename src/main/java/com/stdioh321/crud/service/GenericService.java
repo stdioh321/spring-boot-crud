@@ -2,6 +2,7 @@ package com.stdioh321.crud.service;
 
 import com.stdioh321.crud.exception.RestGenericExecption;
 import com.stdioh321.crud.exception.RestNotFoundException;
+import com.stdioh321.crud.model.BasicModel;
 import com.stdioh321.crud.utils.IRepositoryExtender;
 import com.stdioh321.crud.utils.Utils;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,7 @@ import java.util.List;
 
 
 @MappedSuperclass
-public abstract class GenericService<T, ID> implements BasicService<T, ID> {
+public abstract class GenericService<T extends BasicModel, ID> implements BasicService<T, ID> {
 
     private IRepositoryExtender<T, ID> repository;
 

@@ -70,6 +70,8 @@ public abstract class BasicController<ENT extends BasicModel, ID> {
         var currentEntity = repository.findById(id).orElseThrow(() -> new EntityNotFoundException(id.toString(), null));
         repository.delete(currentEntity);
         repository.flush();
+
+
         /*
         currentEntity.setDeletedAt(new Date());
         repository.saveAndFlush(currentEntity);
@@ -79,8 +81,21 @@ public abstract class BasicController<ENT extends BasicModel, ID> {
     }
 
     @GetMapping("/deleted")
-    public ResponseEntity getTrashed(){
-        return ResponseEntity.ok(repository.findAll());
+    public ResponseEntity getTrashed() {
+        return ResponseEntity.ok(repository.findTrashed());
+    }
+
+    @GetMapping("/deleted/{id}")
+    public ResponseEntity getTrashedById(@PathVariable("id") ID id) {
+        var entTrashed = repository.findTrashedById(id).orElseThrow(() -> new EntityNotFoundException(id.toString(), null));
+        return ResponseEntity.ok(entTrashed);
+    }
+
+    @GetMapping("/restore/{id}")
+    public ResponseEntity restoreTrashedById(@PathVariable("id") ID id) {
+        var restored = repository.restore(id).orElseThrow(() -> new EntityNotFoundException(id.toString(), null));
+
+        return ResponseEntity.ok(restored);
     }
 }
 

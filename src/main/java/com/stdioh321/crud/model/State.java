@@ -21,7 +21,8 @@ import java.util.UUID;
 @Table(name = "state")
 @SQLDelete(sql = "UPDATE State SET deleted_at=CURRENT_TIME WHERE id=?")
 /*
-@Where(clause = "deleted_at IS NULL")*/
+@Where(clause = "deleted_at IS NULL")
+*/
 
 public class State extends BasicModel{
     @Id
