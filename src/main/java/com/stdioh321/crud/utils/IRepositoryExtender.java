@@ -35,7 +35,6 @@ public interface IRepositoryExtender<T extends BasicModel, U> extends JpaReposit
     @Query("UPDATE #{#entityName} e SET deleted_at = NULL WHERE e.id = :id")
     @Modifying
     default Optional<T> restore(@Param("id") U u){
-        System.out.println(u);
         var opt = findTrashedById(u);
         if (opt.isEmpty()) return opt;
         var ent = opt.get();

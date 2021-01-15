@@ -12,6 +12,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.Locale;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -19,12 +21,12 @@ import java.util.UUID;
 @DynamicUpdate
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "state")
-@SQLDelete(sql = "UPDATE State SET deleted_at=CURRENT_TIME WHERE id=?")
+@SQLDelete(sql = "UPDATE State SET deleted_at=CURRENT_TIME,updated_at=CURRENT_TIME WHERE id=?")
 /*
 @Where(clause = "deleted_at IS NULL")
 */
 
-public class State extends BasicModel{
+public class State extends BasicModel {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
@@ -41,7 +43,13 @@ public class State extends BasicModel{
     @Column(nullable = false, unique = true)
     @NotBlank
     @Pattern(regexp = "^\\D+$", message = "Should only contain letters")
-    @Length(max = 2, min = 2,message = "Max/Min is 2 letters")
+    @Length(max = 2, min = 2, message = "Max/Min is 2 letters")
     private String initial;
 
+
+    public void setInitial(String initial) {
+        if (!Objects.isNull(initial))
+            initial = initial.toUpperCase();
+        this.initial = initial;
+    }
 }

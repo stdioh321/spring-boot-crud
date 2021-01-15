@@ -7,6 +7,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PreRemove;
+import javax.persistence.PreUpdate;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Date;
@@ -31,6 +33,12 @@ public abstract class BasicModel {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date deletedAt;
+
+
+    @PreRemove
+    public void preRemove(){
+
+    }
 
 
 

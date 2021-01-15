@@ -19,7 +19,7 @@ import java.util.UUID;
 @DynamicUpdate
 @Data
 @EntityListeners(AuditingEntityListener.class)
-@SQLDelete(sql = "UPDATE City SET deleted_at=CURRENT_TIME WHERE id=?")
+@SQLDelete(sql = "UPDATE City SET deleted_at=CURRENT_TIME,updated_at=CURRENT_TIME WHERE id=?")
 /*
 @Where(clause = "deleted_at IS NULL")
 */

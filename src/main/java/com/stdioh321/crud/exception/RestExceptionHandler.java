@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,5 +59,10 @@ public class RestExceptionHandler {
         apiError.setRejectedValue(ex.getRejectedValue());
         apiError.setObject(ex.getObject());
         return ResponseEntity.status(ex.getStatus()).body(apiError);
+    }
+    @ExceptionHandler({MethodArgumentTypeMismatchException.class})
+    protected ResponseEntity handleEntityNotFoundException(MethodArgumentTypeMismatchException ex) {
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, "Error processing argument", ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
 }

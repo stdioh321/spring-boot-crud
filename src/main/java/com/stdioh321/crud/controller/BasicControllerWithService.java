@@ -1,45 +1,32 @@
 package com.stdioh321.crud.controller;
 
 import com.stdioh321.crud.exception.DataPersistenceGenericException;
-import com.stdioh321.crud.exception.EntityNotFoundException;
 import com.stdioh321.crud.exception.EntityValidationException;
 import com.stdioh321.crud.model.BasicModel;
 import com.stdioh321.crud.service.IBasicService;
-import com.stdioh321.crud.utils.IRepositoryExtender;
-import com.stdioh321.crud.utils.Utils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-public abstract class BasicController<ENT extends BasicModel, ID> {
-    private IRepositoryExtender<ENT, ID> repository;
+public abstract class BasicControllerWithService<ENT extends BasicModel, ID> {
     private IBasicService<ENT, ID> service;
 
-    public BasicController(IRepositoryExtender repository, IBasicService service) {
-        this.repository = repository;
-        this.service = service;
-    }
-
-    public BasicController(IRepositoryExtender repository) {
-        this.repository = repository;
-    }
-
-    public BasicController(IBasicService service) {
+    public BasicControllerWithService(IBasicService service) {
         this.service = service;
     }
 
     @GetMapping
     public ResponseEntity getAll() {
-        return ResponseEntity.ok(repository.findAll());
+        return ResponseEntity.ok(service.getAll());
+
     }
 
     @GetMapping("/{id}")
     public ResponseEntity getById(@PathVariable("id") ID id) {
-        var entity = repository.findById(id);
-        if (entity.isEmpty()) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(entity.get());
+        var entity = service.getById(id);
+        return ResponseEntity.ok(entity);
     }
 
     @PostMapping
@@ -49,7 +36,7 @@ public abstract class BasicController<ENT extends BasicModel, ID> {
         }
         ENT e;
         try {
-            e = repository.saveAndFlush(entity);
+            e = service.post(entity);
         } catch (Exception exc) {
             throw new DataPersistenceGenericException(exc.getMessage(), entity.toString(), entity.getClass().getName());
         }
@@ -61,53 +48,39 @@ public abstract class BasicController<ENT extends BasicModel, ID> {
         if (result.hasErrors()) {
             throw new EntityValidationException(result.getFieldErrors());
         }
-        var currentEntity = repository.findById(id).orElseThrow(() -> new EntityNotFoundException(id.toString(), entity.getClass().getName()));
+        var newEntity = service.put(id, entity);
 
-        var newEntity = Utils.mergeObjects(currentEntity, entity);
-        ENT e;
-        try {
-            e = repository.saveAndFlush(newEntity);
-        } catch (Exception exc) {
-            throw new DataPersistenceGenericException(exc.getMessage(), entity.toString(), entity.getClass().getName());
-        }
-        return ResponseEntity.ok(e);
+        return ResponseEntity.ok(newEntity);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable("id") ID id) {
-        var currentEntity = repository.findById(id).orElseThrow(() -> new EntityNotFoundException(id.toString(), null));
-        repository.delete(currentEntity);
-        repository.flush();
-
-
-        /*
-        currentEntity.setDeletedAt(new Date());
-        repository.saveAndFlush(currentEntity);
-        */
+        var currentEntity = service.delete(id);
         return ResponseEntity.ok(currentEntity);
 
     }
 
     @GetMapping("/deleted")
     public ResponseEntity getTrashed() {
-        return ResponseEntity.ok(repository.findTrashed());
+        return ResponseEntity.ok(service.getTrashed());
     }
 
     @GetMapping("/deleted/{id}")
     public ResponseEntity getTrashedById(@PathVariable("id") ID id) {
-        var entTrashed = repository.findTrashedById(id).orElseThrow(() -> new EntityNotFoundException(id.toString(), null));
+        var entTrashed = service.getTrashedById(id);
         return ResponseEntity.ok(entTrashed);
     }
 
     @GetMapping(value = "/restore/{id}")
     public ResponseEntity restoreTrashedById(@PathVariable(value = "id") ID id) {
-        var restored = repository.restore(id).orElseThrow(() -> new EntityNotFoundException(id.toString(), null));
+        var restored = service.restore(id);
         return ResponseEntity.ok(restored);
     }
 
     @GetMapping(value = "/tmp/{id}")
     public ResponseEntity getTmp(@PathVariable(value = "id") Long id) {
         return ResponseEntity.ok(id);
+
     }
 }
 
