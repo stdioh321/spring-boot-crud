@@ -1,5 +1,6 @@
 package com.stdioh321.crud.controller;
 
+import com.stdioh321.crud.exception.ApiError;
 import com.stdioh321.crud.exception.DataPersistenceGenericException;
 import com.stdioh321.crud.exception.EntityNotFoundException;
 import com.stdioh321.crud.exception.EntityValidationException;
@@ -7,11 +8,17 @@ import com.stdioh321.crud.model.BasicModel;
 import com.stdioh321.crud.service.IBasicService;
 import com.stdioh321.crud.utils.IRepositoryExtender;
 import com.stdioh321.crud.utils.Utils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 public abstract class BasicController<ENT extends BasicModel, ID> {
     private IRepositoryExtender<ENT, ID> repository;
@@ -31,12 +38,15 @@ public abstract class BasicController<ENT extends BasicModel, ID> {
     }
 
     @GetMapping
-    public ResponseEntity getAll() {
+    public ResponseEntity<List<ENT>> getAll() {
         return ResponseEntity.ok(repository.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getById(@PathVariable("id") ID id) {
+    @ApiResponse(responseCode = "Not 200", content = @Content(schema = @Schema(implementation = ApiError.class)))
+    public ResponseEntity<ENT> getById(
+            @Parameter(example = "38cc3745-84da-4317-8240-547ab9806977")
+            @PathVariable("id") ID id) {
         var entity = repository.findById(id);
         if (entity.isEmpty()) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(entity.get());

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.hibernate.annotations.*;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -48,8 +49,11 @@ public class State extends BasicModel {
 
 
     public void setInitial(String initial) {
+
         if (!Objects.isNull(initial))
             initial = initial.toUpperCase();
         this.initial = initial;
     }
+
+
 }

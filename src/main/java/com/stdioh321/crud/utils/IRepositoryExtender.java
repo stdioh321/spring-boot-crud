@@ -11,12 +11,17 @@ import org.springframework.stereotype.Repository;
 import pl.powermilk.jpa.soft.delete.repository.SoftDelete;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
 public interface IRepositoryExtender<T extends BasicModel, U> extends JpaRepository<T, U> {
+
+    default Class<?> getEntityClass() {
+        return (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    }
 
     @Override
     @Query("SELECT e FROM #{#entityName} e WHERE deleted_at IS NULL")
@@ -34,7 +39,7 @@ public interface IRepositoryExtender<T extends BasicModel, U> extends JpaReposit
 
     @Query("UPDATE #{#entityName} e SET deleted_at = NULL WHERE e.id = :id")
     @Modifying
-    default Optional<T> restore(@Param("id") U u){
+    default Optional<T> restore(@Param("id") U u) {
         var opt = findTrashedById(u);
         if (opt.isEmpty()) return opt;
         var ent = opt.get();

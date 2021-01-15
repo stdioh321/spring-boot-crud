@@ -9,17 +9,18 @@ import com.stdioh321.crud.utils.Utils;
 import org.springframework.http.HttpStatus;
 
 import javax.persistence.MappedSuperclass;
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 
 @MappedSuperclass
 public abstract class GenericService<T extends BasicModel, ID> implements IBasicService<T, ID> {
-
     private IRepositoryExtender<T, ID> repository;
 
 
     public GenericService(IRepositoryExtender repository) {
         this.repository = repository;
+
     }
 
 

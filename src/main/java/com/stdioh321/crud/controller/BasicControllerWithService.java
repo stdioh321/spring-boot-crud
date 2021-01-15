@@ -4,14 +4,20 @@ import com.stdioh321.crud.exception.DataPersistenceGenericException;
 import com.stdioh321.crud.exception.EntityValidationException;
 import com.stdioh321.crud.model.BasicModel;
 import com.stdioh321.crud.service.IBasicService;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.lang.reflect.ParameterizedType;
 
 public abstract class BasicControllerWithService<ENT extends BasicModel, ID> {
     private IBasicService<ENT, ID> service;
+    protected Class<ENT> clazz = (Class<ENT>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 
     public BasicControllerWithService(IBasicService service) {
         this.service = service;
@@ -24,7 +30,8 @@ public abstract class BasicControllerWithService<ENT extends BasicModel, ID> {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getById(@PathVariable("id") ID id) {
+
+    public ResponseEntity<ENT> getById(@PathVariable("id") ID id) {
         var entity = service.getById(id);
         return ResponseEntity.ok(entity);
     }

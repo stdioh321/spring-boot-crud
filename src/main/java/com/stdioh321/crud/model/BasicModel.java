@@ -1,5 +1,6 @@
 package com.stdioh321.crud.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
@@ -10,6 +11,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
@@ -17,6 +19,8 @@ import java.util.Objects;
 @MappedSuperclass
 @Data
 public abstract class BasicModel {
+
+
 
     @CreatedDate
     @Column(name = "created_at")

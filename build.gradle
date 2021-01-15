@@ -47,6 +47,15 @@ dependencies {
 
     compile group: 'pl.powermilk', name: 'jpa-soft-delete-spring-boot-starter', version: '1.0.0.RELEASE'
 
+    /*
+    OPENAPI and SWAGGER
+    */
+    compile 'org.springdoc:springdoc-openapi-ui:1.5.2'
+    compile group: 'io.springfox', name: 'springfox-swagger-common', version: '3.0.0'
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
+
+
 }
 
 test {
