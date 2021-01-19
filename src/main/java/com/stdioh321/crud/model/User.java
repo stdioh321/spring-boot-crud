@@ -20,7 +20,7 @@ import java.util.UUID;
 @Table(name = "user")
 @Data
 
-public class User extends BasicModel implements UserDetails {
+public class User extends BasicModel{
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")

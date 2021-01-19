@@ -12,9 +12,8 @@ import java.util.UUID;
 @Service
 public class UserService extends GenericService<User, UUID> {
 
-    /*@Autowired
-    UserRepository repository;*/
-
+    /*UserRepository repository;
+*/
     @Autowired
     public UserService(UserRepository repository) {
         super(repository);
@@ -23,4 +22,8 @@ public class UserService extends GenericService<User, UUID> {
    /* public User getByEmail(String email) {
         return ((UserRepository) this.repository).findByEmail(email);
     }*/
+
+    public User getByUsernameOrEmail(String username){
+        return  ((UserRepository) this.repository).findByUsernameOrEmail(username).orElse(null);
+    }
 }
