@@ -29,6 +29,10 @@ public class RestGenericExecption extends RuntimeException {
         this.rejectedValue = rejectedValue;
         this.object = object.getClass().getSimpleName();
     }
+    public RestGenericExecption(String message, HttpStatus status) {
+        this.message = message;
+        this.status = status;
+    }
 
     public RestGenericExecption(String message, HttpStatus status, String rejectedValue, String object) {
         this.message = message;

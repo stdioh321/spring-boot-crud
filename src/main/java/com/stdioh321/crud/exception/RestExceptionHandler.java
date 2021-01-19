@@ -6,6 +6,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -64,5 +65,10 @@ public class RestExceptionHandler {
     protected ResponseEntity handleEntityNotFoundException(MethodArgumentTypeMismatchException ex) {
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, "Error processing argument", ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
+    }
+    @ExceptionHandler({HttpRequestMethodNotSupportedException.class})
+    protected ResponseEntity handleEntityNotFoundException(HttpRequestMethodNotSupportedException ex) {
+        ApiError apiError = new ApiError(HttpStatus.METHOD_NOT_ALLOWED, "Method not allowed", ex);
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(apiError);
     }
 }

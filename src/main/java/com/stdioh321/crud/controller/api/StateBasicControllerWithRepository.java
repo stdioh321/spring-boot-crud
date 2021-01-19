@@ -1,4 +1,4 @@
-package com.stdioh321.crud.controller;
+package com.stdioh321.crud.controller.api;
 
 import com.stdioh321.crud.model.State;
 import com.stdioh321.crud.repository.StateRepository;
@@ -10,10 +10,10 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("${api.url}/state")
-public class StateBasicController extends BasicController<State, UUID> {
+public class StateBasicControllerWithRepository extends BasicControllerWithRepository<State, UUID> {
 
     @Autowired
-    public StateBasicController(StateRepository repository) {
+    public StateBasicControllerWithRepository(StateRepository repository) {
         super(repository);
     }
 }

@@ -23,19 +23,30 @@ public interface IRepositoryExtender<T extends BasicModel, U> extends JpaReposit
         return (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
-    @Override
-    @Query("SELECT e FROM #{#entityName} e WHERE deleted_at IS NULL")
-    List<T> findAll();
 
-    @Override
+    @Query("SELECT e FROM #{#entityName} e WHERE deleted_at IS NULL")
+    List<T> findAllActive();
+
+
     @Query("SELECT e FROM #{#entityName} e WHERE id = ?1 AND  deleted_at IS NULL ")
-    Optional<T> findById(U u);
+    Optional<T> findByIdActive(U u);
 
     @Query("SELECT e FROM #{#entityName} e WHERE deleted_at <> NULL")
     List<T> findTrashed();
 
     @Query("SELECT e FROM #{#entityName} e WHERE id = ?1 AND  deleted_at <> NULL ")
     Optional<T> findTrashedById(U u);
+
+
+
+    default public Optional<T> deleteSoft(U id){
+        var opt = findById(id);
+        if(opt.isEmpty()) return opt;
+        var currentEntity = opt.get();
+        currentEntity.setDeletedAt(new Date());
+        currentEntity = saveAndFlush(currentEntity);
+        return Optional.of(currentEntity);
+    }
 
     @Query("UPDATE #{#entityName} e SET deleted_at = NULL WHERE e.id = :id")
     @Modifying

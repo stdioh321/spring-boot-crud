@@ -1,7 +1,6 @@
-package com.stdioh321.crud.controller;
+package com.stdioh321.crud.controller.api;
 
 import com.stdioh321.crud.model.State;
-import com.stdioh321.crud.repository.StateRepository;
 import com.stdioh321.crud.service.StateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

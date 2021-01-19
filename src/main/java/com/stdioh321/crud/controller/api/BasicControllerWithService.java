@@ -1,4 +1,4 @@
-package com.stdioh321.crud.controller;
+package com.stdioh321.crud.controller.api;
 
 import com.stdioh321.crud.exception.DataPersistenceGenericException;
 import com.stdioh321.crud.exception.EntityValidationException;

@@ -1,5 +1,5 @@
 # spring-boot-crud
-Api Rest Crud with Java + Spring Boot 
+Api Rest Crud with Java + Spring Boot + Swagger UI
 
 # Requirements
 1. [Sdkman](https://sdkman.io/install)

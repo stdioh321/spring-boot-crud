@@ -1,4 +1,4 @@
-package com.stdioh321.crud.controller;
+package com.stdioh321.crud.controller.api;
 
 import com.stdioh321.crud.model.City;
 import com.stdioh321.crud.repository.CityRepository;
@@ -10,10 +10,10 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("${api.url}/city")
-public class CityBasicController extends BasicController<City, UUID> {
+public class CityBasicControllerWithRepository extends BasicControllerWithRepository<City, UUID> {
 
     @Autowired
-    public CityBasicController(CityRepository repository) {
+    public CityBasicControllerWithRepository(CityRepository repository) {
         super(repository);
     }
 }

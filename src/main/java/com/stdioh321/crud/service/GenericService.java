@@ -6,6 +6,7 @@ import com.stdioh321.crud.exception.RestNotFoundException;
 import com.stdioh321.crud.model.BasicModel;
 import com.stdioh321.crud.utils.IRepositoryExtender;
 import com.stdioh321.crud.utils.Utils;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 import javax.persistence.MappedSuperclass;
@@ -15,12 +16,12 @@ import java.util.List;
 
 @MappedSuperclass
 public abstract class GenericService<T extends BasicModel, ID> implements IBasicService<T, ID> {
-    private IRepositoryExtender<T, ID> repository;
+
+    protected IRepositoryExtender<T, ID> repository;
 
 
     public GenericService(IRepositoryExtender repository) {
         this.repository = repository;
-
     }
 
 
@@ -30,12 +31,12 @@ public abstract class GenericService<T extends BasicModel, ID> implements IBasic
 
     @Override
     public List<T> getAll() {
-        return repository.findAll();
+        return repository.findAllActive();
     }
 
     @Override
     public T getById(ID id) {
-        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException(id.toString(), null));
+        return repository.findByIdActive(id).orElseThrow(() -> new EntityNotFoundException(id.toString(), null));
     }
 
     @Override
@@ -45,7 +46,7 @@ public abstract class GenericService<T extends BasicModel, ID> implements IBasic
 
     @Override
     public T delete(ID id) {
-        var entity = repository.findById(id).orElseThrow(() -> new EntityNotFoundException(id.toString(), null));
+        var entity = repository.findByIdActive(id).orElseThrow(() -> new EntityNotFoundException(id.toString(), null));
         repository.delete(entity);
         repository.flush();
         return entity;
@@ -53,7 +54,7 @@ public abstract class GenericService<T extends BasicModel, ID> implements IBasic
 
     @Override
     public T put(ID id, T entity) {
-        var tmpEntity = repository.findById(id).orElseThrow(() -> new EntityNotFoundException(id.toString(), entity.getClass().getName()));
+        var tmpEntity = repository.findByIdActive(id).orElseThrow(() -> new EntityNotFoundException(id.toString(), entity.getClass().getName()));
         try {
             tmpEntity = Utils.mergeObjects(tmpEntity, entity);
             repository.saveAndFlush(tmpEntity);

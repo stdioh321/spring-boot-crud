@@ -1,25 +1,26 @@
 package com.stdioh321.crud.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Column;
+import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PreRemove;
-import javax.persistence.PreUpdate;
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
 
 @MappedSuperclass
 @Data
+@DynamicUpdate
+@EntityListeners(AuditingEntityListener.class)
 public abstract class BasicModel {
-
 
 
     @CreatedDate
@@ -40,15 +41,17 @@ public abstract class BasicModel {
 
 
     @PreRemove
-    public void preRemove(){
-
+    public void preRemove() {
+        System.out.println(this);
+    /*    var tmpDate = new Date();
+        this.setUpdatedAt(tmpDate);
+        this.setDeletedAt(tmpDate);*/
+        System.out.println("preRemove ---------------------------------------");
     }
 
 
-
-
     public BasicModel updateOnlyNotNull(BasicModel entity, String[] fieldsToIgnore) {
-        if(Objects.isNull(fieldsToIgnore)) fieldsToIgnore = new String[]{};
+        if (Objects.isNull(fieldsToIgnore)) fieldsToIgnore = new String[]{};
         if (!getClass().equals(entity.getClass())) {
             return null;
         }
@@ -62,10 +65,10 @@ public abstract class BasicModel {
                     f.set(this, f.get(entity));
                 }
             }
-        } catch (Exception e) {
-            System.out.println(e);
-            return null;
+            } catch (Exception e) {
+                System.out.println(e);
+                return null;
+            }
+            return entity;
         }
-        return entity;
     }
-}
