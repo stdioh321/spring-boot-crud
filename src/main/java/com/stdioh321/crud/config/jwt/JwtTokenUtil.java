@@ -1,10 +1,12 @@
 package com.stdioh321.crud.config.jwt;
 
+import com.stdioh321.crud.exception.RestGenericExecption;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +27,7 @@ public class JwtTokenUtil implements Serializable {
 
     //retorna o username do token jwt
     public String getUsernameFromToken(String token) {
+
         return getClaimFromToken(token, Claims::getSubject);
     }
 
@@ -41,7 +44,9 @@ public class JwtTokenUtil implements Serializable {
 
     //para retornar qualquer informação do token nos iremos precisar da secret key
     private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        Claims claims = null;
+        claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        return claims;
     }
 
     //check if the token has expired
@@ -51,12 +56,12 @@ public class JwtTokenUtil implements Serializable {
     }
 
     //gera token para user
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
-        return doGenerateToken(claims, userDetails.getUsername());
+        return doGenerateToken(claims, username);
     }
 
-    //Cria o token e devine tempo de expiração pra ele
+    //Cria o token e define tempo de expiração pra ele
     public String doGenerateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY))

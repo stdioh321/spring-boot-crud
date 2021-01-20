@@ -12,10 +12,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 
 @Service
-public class MyUserDetailsService implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private UserService userService;
 
@@ -23,7 +24,12 @@ public class MyUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) {
         var tempUser = userService.getByUsernameOrEmail(username);
         if(tempUser == null) throw new BadCredentialsException("Invalid Credentials");
-        return new User(tempUser.getUsername(), tempUser.getPassword(), new ArrayList<>());
+        return new User(tempUser.getId().toString(), tempUser.getPassword(), new ArrayList<>());
+    }
+    public UserDetails loadUserById(String id) {
+        var tempUser = userService.getById(UUID.fromString(id));
+        if(tempUser == null) throw new BadCredentialsException("Invalid Credentials");
+        return new User(tempUser.getId().toString(), tempUser.getPassword(), new ArrayList<>());
     }
 
     @Bean

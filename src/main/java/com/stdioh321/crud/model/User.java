@@ -1,6 +1,7 @@
 package com.stdioh321.crud.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
@@ -42,6 +43,7 @@ public class User extends BasicModel{
     @NotBlank
     @Column(nullable = false)
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\\!\\@\\#\\$\\%\\&\\=\\?])[a-zA-Z\\d\\!\\@\\#\\$\\%\\&\\=\\?]{8,}$",message = "Password should have Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character (!@#$%&=?)")
+    @JsonIgnore
     private String password;
 
     @NotBlank
