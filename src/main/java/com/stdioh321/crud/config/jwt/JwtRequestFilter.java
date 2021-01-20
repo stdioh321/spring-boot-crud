@@ -39,7 +39,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        System.out.println("doFilterInternal");
+        /*System.out.println("doFilterInternal");*/
         try {
             final String authHeader = request.getHeader("Authorization");
             String jwt = null;
@@ -47,20 +47,25 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
                 jwt = authHeader.substring(7);
                 username = jwtTokenUtil.getUsernameFromToken(jwt);
-            } else throw new Exception();
+            } else throw new Exception("Invalid Header Authorization");
 
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = this.userDetailsService.loadUserById(username);
                 if (jwtTokenUtil.validateToken(jwt, userDetails)) {
+
+                    var claims = jwtTokenUtil.getAllClaimsFromToken(jwt);
+                    if (!claims.get("user-agent").equals(request.getHeader("User-Agent"))) throw new Exception("Invalid User-Agent");
+                    if (!claims.get("ip").equals(request.getRemoteAddr())) throw new Exception("Invalid IP");
+
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-                }else throw new Exception();
+                }else throw new Exception("Invalid Token");
             }
             filterChain.doFilter(request, response);
         } catch (Exception ex) {
-            var restGenericException = new RestGenericExecption("Invalid Token", ex, HttpStatus.UNAUTHORIZED, null, null);
+            var restGenericException = new RestGenericExecption("Invalid Token", ex, HttpStatus.UNAUTHORIZED, request.getServletPath(), null);
             resolver.resolveException(request, response, null, restGenericException);
 
         }

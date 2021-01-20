@@ -24,12 +24,12 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) {
         var tempUser = userService.getByUsernameOrEmail(username);
         if(tempUser == null) throw new BadCredentialsException("Invalid Credentials");
-        return new User(tempUser.getId().toString(), tempUser.getPassword(), new ArrayList<>());
+        return new User(tempUser.getId().toString(), tempUser.getPassword(), tempUser.getRoles());
     }
     public UserDetails loadUserById(String id) {
         var tempUser = userService.getById(UUID.fromString(id));
         if(tempUser == null) throw new BadCredentialsException("Invalid Credentials");
-        return new User(tempUser.getId().toString(), tempUser.getPassword(), new ArrayList<>());
+        return new User(tempUser.getId().toString(), tempUser.getPassword(), tempUser.getRoles());
     }
 
     @Bean
