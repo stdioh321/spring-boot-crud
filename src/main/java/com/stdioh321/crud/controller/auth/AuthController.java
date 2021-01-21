@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.UUID;
 
 @RestController
@@ -46,18 +45,12 @@ public class AuthController {
             var tempUser = new UsernamePasswordAuthenticationToken(req.getUsername(), req.getPassword());
             auth = authenticationManager.authenticate(tempUser);
             user = (User) auth.getPrincipal();
-
+            /*System.out.println(user.getAuthorities());*/
 
         } catch (Exception e) {
             throw new RestGenericExecption("Incorrect username or password", e, HttpStatus.UNAUTHORIZED, null, null);
         }
-        com.stdioh321.crud.model.User tempUser = userService.getByUsernameOrEmail(req.getUsername());
-        return ResponseEntity.ok(new AuthResponse(jwtTokenUtil.doGenerateToken(new HashMap<>() {{
-            put("user-agent", request.getHeader("User-Agent"));
-            put("ip", request.getRemoteAddr());
-            put("id", tempUser.getId());
-            put("roles", tempUser.getRoleNames());
-        }}, user.getUsername(), false)));
+        return ResponseEntity.ok(new AuthResponse(jwtTokenUtil.generateCustomTokenWithId(user.getUsername(), request)));
     }
 
     @RequestMapping("/me")
