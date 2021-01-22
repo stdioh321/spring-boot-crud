@@ -31,10 +31,13 @@ Your terminal should looks like this:
 
 Open your browser at the url:<br>
 ### **http://localhost:8080**
-![Index](docs/screenshots/screenshot_02.png)
-![Swagger UI](docs/screenshots/screenshot_03.png)
+
+|Index|Index with JWT|
+|---|---|
+|![Index](docs/screenshots/screenshot_02.png)|![Index with JWT](docs/screenshots/screenshot_03.png)|
 
 
+![Swagger UI](docs/screenshots/screenshot_swagger_01.png)
 
 # References
 * [Spring Boot](https://spring.io/projects/spring-boot)

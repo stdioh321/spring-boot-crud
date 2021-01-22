@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,6 +21,10 @@ import java.util.Set;
 
 @Configuration
 public class Db1Seeder {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Autowired
     private CityService cityService;
     @Autowired
@@ -46,7 +51,7 @@ public class Db1Seeder {
             tmpUser.setName("root");
             tmpUser.setEmail("root@test.com");
             tmpUser.setUsername("root");
-            tmpUser.setPassword("Root@4231");
+            tmpUser.setPassword(passwordEncoder.encode("Root@4231"));
             tmpUser.setRoles(new HashSet<Role>() {
                 {
                     add(r1);
@@ -59,7 +64,8 @@ public class Db1Seeder {
             tmpUser2.setName("test");
             tmpUser2.setEmail("test@test.com");
             tmpUser2.setUsername("test");
-            tmpUser2.setPassword("Test@4231");
+            String tmpPass2 = passwordEncoder.encode("Test@4231");
+            tmpUser2.setPassword(tmpPass2);
             tmpUser2.setRoles(new HashSet<Role>() {
                 {
                     add(r2);

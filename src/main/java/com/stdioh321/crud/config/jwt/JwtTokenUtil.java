@@ -62,28 +62,22 @@ public class JwtTokenUtil implements Serializable {
     //check if the token has expired
     public Boolean isTokenExpired(String token) {
         final Date expiration = getExpirationDateFromToken(token);
-        /* If the expirationDate is null, means that the token should not expire */
-        /*if (Objects.isNull(expiration)) return false;*/
         return expiration.before(new Date());
     }
 
     //gera token para user
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
-        return doGenerateToken(claims, username, false);
+        return doGenerateToken(claims, username);
     }
 
     //Cria o token e define tempo de expiração pra ele
-    public String doGenerateToken(Map<String, Object> claims, String subject, boolean removeExpiration) {
-
-        removeExpiration = Objects.isNull(removeExpiration) ? false : removeExpiration;
+    public String doGenerateToken(Map<String, Object> claims, String subject) {
 
         Date issued = new Date(System.currentTimeMillis());
         Date expiration = new Date(issued.getTime() + (jwtExpiretime * JWT_TOKEN_VALIDITY));
+        var jwtBuilder = Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(issued).setExpiration(expiration);
 
-
-        var jwtBuilder = Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(issued);
-        if (!removeExpiration) jwtBuilder.setExpiration(expiration);
         return jwtBuilder.signWith(SignatureAlgorithm.HS512, secret).compact();
     }
 
@@ -91,7 +85,6 @@ public class JwtTokenUtil implements Serializable {
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
-        /*return username.equals(userDetails.getUsername());*/
     }
 
 
@@ -103,8 +96,9 @@ public class JwtTokenUtil implements Serializable {
         claims.put("id", tempUser.getId());
         claims.put("roles", tempUser.getRoleNames());
 
-        return doGenerateToken(claims, tempUser.getId().toString(), false);
+        return doGenerateToken(claims, tempUser.getId().toString());
     }
+
     public String generateCustomTokenWithId(String id, HttpServletRequest request) {
         User tempUser = userService.getById(UUID.fromString(id));
         HashMap claims = new HashMap();
@@ -113,7 +107,7 @@ public class JwtTokenUtil implements Serializable {
         claims.put("id", tempUser.getId());
         claims.put("roles", tempUser.getRoleNames());
 
-        return doGenerateToken(claims, tempUser.getId().toString(), false);
+        return doGenerateToken(claims, tempUser.getId().toString());
     }
 
 }

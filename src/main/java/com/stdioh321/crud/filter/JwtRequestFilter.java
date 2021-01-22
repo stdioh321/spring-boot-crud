@@ -1,11 +1,14 @@
-package com.stdioh321.crud.config.jwt;
+package com.stdioh321.crud.filter;
 
+import com.stdioh321.crud.config.jwt.JwtTokenUtil;
 import com.stdioh321.crud.exception.RestGenericExecption;
 import com.stdioh321.crud.model.Role;
 import com.stdioh321.crud.service.CustomUserDetailsService;
+import com.stdioh321.crud.utils.Routes;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,6 +28,8 @@ import java.util.Set;
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
+    @Value("${api.url}")
+    private String urlApi;
 
     @Autowired
     private CustomUserDetailsService userDetailsService;
@@ -37,17 +42,17 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return request.getRequestURI().equals("/authenticate");
+        return request.getRequestURI().equals(urlApi + Routes.AUTHENTICATE) || !request.getRequestURI().startsWith("/api/");
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        /*System.out.println("doFilterInternal");*/
+        System.out.println("doFilterInternal");
+
+
         String jwt = null;
         String username = null;
         try {
-
-
             final String authHeader = request.getHeader("Authorization");
 
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
@@ -64,9 +69,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
 
         } catch (ExpiredJwtException ex) {
-            /*System.out.println(ex.getClaims());
-            var restGenericException = new RestGenericExecption("Expired Token", ex, HttpStatus.UNAUTHORIZED, request.getServletPath(), null);
-            resolver.resolveException(request, response, null, restGenericException);*/
+
             try {
 
                 if (JwtTokenUtil.blackList.contains(jwt)) {
@@ -96,7 +99,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     public void handleSecurityContext(String jwt, String username, HttpServletRequest request) throws Exception {
         UserDetails userDetails = userDetailsService.loadUserById(username);
-        Set<Role> roles = (Set<Role>) userDetails.getAuthorities();
+        /*Set<Role> roles = (Set<Role>) userDetails.getAuthorities();*/
         if (jwtTokenUtil.validateToken(jwt, userDetails)) {
 
             var claims = jwtTokenUtil.getAllClaimsFromToken(jwt);

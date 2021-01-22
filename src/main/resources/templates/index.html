@@ -1,16 +1,247 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Hello</title>
+    <title>Index</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous"></script>
 </head>
+
 <body>
-<h1>API</h1>
-<h2><a href="api/v1/state" target="_blank">API: State</a></h2>
-<h2><a href="api/v1/city" target="_blank">API: City</a></h2>
-<hr>
-<h1>OpenApi and Swagger</h1>
-<h2><a href="v3/api-docs" target="_blank">OpenApi</a></h2>
-<h2><a href="swagger-ui.html" target="_blank">Swagger UI</a></h2>
+    <div id="app">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-12">
+                    <form class="form" action="/api/v1/authenticate" method="POST" @submit="onSubmit">
+                        <h1>Get the Token</h1>
+
+                        <div class="form-group row">
+                            <label for="" class="col-12 font-weight-bold">Username</label>
+                            <div class="col-12">
+                                <input type="text" class="form-control" name="username" placeholder="username" value="test" required/>
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label for="" class="col-12  font-weight-bold">Password</label>
+                            <div class="col-12">
+                                <input type="password" class="form-control" name="password" placeholder="password" minlength="8" value="Test@4231" required/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-6 offset-6">
+                                <button type="submit" class="btn btn-block btn-primary btn-lg" :disabled="loading">
+                                    <template v-if="loading==true">
+                                        <span class="">Loading...</span>
+                                        <div class="spinner-border spinner-border-sm" >
+                                            
+                                        </div>
+                                    </template>
+                                    <template v-else>Send</template>
+
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="col-md-6 col-12 d-flex align-items-center">
+                    <div class="row w-100">
+                        <div class="col-6">
+                            <div class="border p-1">
+                                User: test <br> Pass: Test@4231 <br> Roles: USER
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="border p-1">
+                                User: root <br> Pass: Root@4231 <br> Roles: ADMIN,USER
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+
+
+                <div class="col-12" v-if="errorMsg!=null">
+                    <div class="text-danger">
+                        {{errorMsg}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 col-12">
+                    <h1>API</h1>
+                    <h4>
+                        Api is only available with a valid JWT TOKEN
+                    </h4>
+                    <div class="d-flex">
+                        <a class="btn btn-primary btn-lg flex-fill mx-1" @click="openLinkWithJwt" href="http://localhost:8080/api/v1/state">API: State 
+                            <i class="fas fa-external-link-square-alt" :hidden="!jwt"></i>
+                        </a>
+                        <a class="btn btn-primary btn-lg flex-fill mx-1 " @click="openLinkWithJwt" href="http://localhost:8080/api/v1/city">API: City <i class="fas fa-external-link-square-alt" :hidden="!jwt"></i></a>
+                        <a class="btn btn-primary btn-lg flex-fill mx-1" @click="openLinkWithJwt" href="http://localhost:8080/api/v1/user">API: User <i class="fas fa-external-link-square-alt" :hidden="!jwt"></i></a>
+                    </div>
+                    <hr>
+                    <h1>With ROLES</h1>
+                    <div class="d-flex">
+                        <a class="btn btn-primary btn-lg flex-fill mx-1" @click="openLinkWithJwt" href="http://localhost:8080/api/v1/role-user">ROLE USER <i class="fas fa-external-link-square-alt" :hidden="!jwt"></i></a>
+                        <a class="btn btn-primary btn-lg flex-fill mx-1" @click="openLinkWithJwt" href="http://localhost:8080/api/v1/role-admin">ROLE ADMIN <i class="fas fa-external-link-square-alt" :hidden="!jwt"></i></a>
+                    </div>
+
+
+                    <hr>
+
+                    <h1>OpenApi and Swagger</h1>
+                    <div class="d-flex">
+
+                        <a href="http://localhost:8080/v3/api-docs" target="_blank" class="btn btn-primary btn-lg flex-fill mx-1">OpenApi <i class="fas fa-external-link-square-alt" ></i>
+                        </a>
+
+
+                        <a href="http://localhost:8080/swagger-ui.html" target="_blank" class="btn btn-primary btn-lg flex-fill mx-1">Swagger UI <i class="fas fa-external-link-square-alt" ></i>
+                        </a>
+
+                    </div>
+                </div>
+                <div class="col-md-6 col-12" v-if="result">
+                    <pre>{{result}}</pre>
+                </div>
+            </div>
+            <div class="col-12 my-2" v-if="jwt!=null" id="jwt-info">
+                <div class="row">
+                    <div class="col-12">
+                        <h1>JWT</h1>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="text-warning text-break">
+                            {{jwt}}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="text-success text-break">
+                            {{jwt | parseJwt}}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 </body>
+<script>
+    Vue.filter('parseJwt', function(value) {
+        console.log(value);
+        if (!value) return '';
+        value = parseJwt(value);
+        return value;
+    });
+    var app = new Vue({
+        el: "#app",
+        data: {
+            jwt: null,
+            errorMsg: null,
+            result: null,
+            loading: false
+        },
+
+        methods: {
+
+            openLinkWithJwt: function(ev) {
+                ev.preventDefault();
+                this.result = null;
+                if (!this.jwt) return;
+                var url = ev.target.href;
+                axios.get(url, {
+                        headers: {
+                            "Authorization": "Bearer " + this.jwt
+                        }
+                    })
+                    .then(res => {
+                        this.result = res.data;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        if (err.response && err.response.data)
+                            this.result = err.response.data;
+                        else
+                            this.result = "Unknow error";
+
+                    })
+
+            },
+
+            onSubmit: async function(ev) {
+                ev.preventDefault();
+                if (this.loading == true) return;
+                this.jwt = null;
+                this.errorMsg = null;
+                this.result = null;
+                this.loading = true;
+
+
+                var username = ev.target.username.value;
+                var password = ev.target.password.value;
+                var json = {
+                    username: username,
+                    password: password
+                };
+                await sleepWithPromise();
+                axios.post("http://localhost:8080/api/v1/authenticate", json)
+                    .then((res) => {
+                        this.jwt = res.data.jwt;
+                        this.loading = false;
+                    })
+                    .catch((err) => {
+                        if (err.response && err.response.status == 401)
+                            this.errorMsg = err.response.data.message;
+                        else
+                            this.errorMsg = "Unknow error";
+                        this.loading = false;
+                    });
+            }
+        }
+    });
+
+    function parseJwt(token) {
+        // var base64Url = token.split('.')[1];
+        // var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        // var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        //     return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        // }).join(''));
+
+        // return JSON.parse(jsonPayload);
+
+        try {
+            return JSON.parse(atob(token.split('.')[1]));
+        } catch (e) {
+            return null;
+        }
+    }
+
+
+    function sleepWithPromise(milliseconds = 1000) {
+        /* var p1 = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve(true);
+            }, milliseconds);
+        });
+        return p1.then(); */
+        return (function() {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve(true);
+                }, milliseconds);
+            });
+        })().then();
+
+    }
+</script>
+
 </html>

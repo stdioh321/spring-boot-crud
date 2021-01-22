@@ -42,7 +42,6 @@ public class User extends BasicModel {
 
     @NotBlank
     @Column(nullable = false)
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\\!\\@\\#\\$\\%\\&\\=\\?])[a-zA-Z\\d\\!\\@\\#\\$\\%\\&\\=\\?]{8,}$", message = "Password should have Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character (!@#$%&=?)")
     @JsonIgnore
     private String password;
 
