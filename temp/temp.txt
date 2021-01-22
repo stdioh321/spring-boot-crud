@@ -9,4 +9,8 @@ dasasd
 asdsaas
 
 
+<<<<<<< HEAD
 zasasasasasa
+=======
+zasasasasasa
+>>>>>>> main
