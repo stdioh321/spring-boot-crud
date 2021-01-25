@@ -78,7 +78,7 @@ public class Db1Seeder {
                 State s = new State();
                 s.setName("State " + Utils.getRandomString(5));
                 s.setInitial(Utils.getRandomString(2));
-                s = stateRepository.saveAndFlush(s);
+                s = stateRepository.save(s);
                 City c = new City();
                 c.setName("City " + Utils.getRandomString(5));
                 c.setState(s);

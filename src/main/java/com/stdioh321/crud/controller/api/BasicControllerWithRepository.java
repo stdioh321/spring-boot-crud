@@ -62,7 +62,7 @@ public abstract class BasicControllerWithRepository<ENT extends BasicModel, ID> 
         }
         ENT e;
         try {
-            e = repository.saveAndFlush(entity);
+            e = repository.save(entity);
         } catch (Exception exc) {
 
             throw new DataPersistenceGenericException(exc.getMessage(), entity.toString(), entity.getClass().getName());
@@ -80,7 +80,7 @@ public abstract class BasicControllerWithRepository<ENT extends BasicModel, ID> 
         var newEntity = Utils.mergeObjects(currentEntity, entity);
         ENT e;
         try {
-            e = repository.saveAndFlush(newEntity);
+            e = repository.save(newEntity);
         } catch (Exception exc) {
             throw new DataPersistenceGenericException(exc.getMessage(), entity.toString(), entity.getClass().getName());
         }

@@ -7,6 +7,8 @@ import com.stdioh321.crud.service.IBasicService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.lang.reflect.ParameterizedType;
+import java.util.Objects;
 
 public abstract class BasicControllerWithService<ENT extends BasicModel, ID> {
     private IBasicService<ENT, ID> service;
@@ -24,9 +27,17 @@ public abstract class BasicControllerWithService<ENT extends BasicModel, ID> {
     }
 
     @GetMapping
-    public ResponseEntity getAll() {
-        return ResponseEntity.ok(service.getAll());
+    public ResponseEntity getAll(
+            Integer page,
+            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(defaultValue = "id") String sort
 
+    ) {
+        if (Objects.isNull(page))
+            return ResponseEntity.ok(service.getAll());
+        page = (page == 0) ? 0 : page - 1;
+        var pageRequest = PageRequest.of(page, size, Sort.by(sort));
+        return ResponseEntity.ok(service.getPaginated(page, size));
     }
 
     @GetMapping("/{id}")

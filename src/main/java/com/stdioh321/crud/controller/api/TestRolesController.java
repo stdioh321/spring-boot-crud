@@ -19,7 +19,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("${api.url}")
-public class Tmp1Controller {
+public class TestRolesController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 

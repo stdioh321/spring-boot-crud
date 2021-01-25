@@ -81,17 +81,17 @@
                         Api is only available with a valid JWT TOKEN
                     </h4>
                     <div class="d-flex">
-                        <a class="btn btn-primary btn-lg flex-fill mx-1" @click="openLinkWithJwt" href="http://localhost:8080/api/v1/state">API: State 
+                        <button :disabled="!jwt" class="btn btn-primary btn-lg flex-fill mx-1" @click="openLinkWithJwt" href="http://localhost:8080/api/v1/state">API: State 
                             <i class="fas fa-external-link-square-alt" :hidden="!jwt"></i>
-                        </a>
-                        <a class="btn btn-primary btn-lg flex-fill mx-1 " @click="openLinkWithJwt" href="http://localhost:8080/api/v1/city">API: City <i class="fas fa-external-link-square-alt" :hidden="!jwt"></i></a>
-                        <a class="btn btn-primary btn-lg flex-fill mx-1" @click="openLinkWithJwt" href="http://localhost:8080/api/v1/user">API: User <i class="fas fa-external-link-square-alt" :hidden="!jwt"></i></a>
+                        </button>
+                        <button :disabled="!jwt" class="btn btn-primary btn-lg flex-fill mx-1 " @click="openLinkWithJwt" href="http://localhost:8080/api/v1/city">API: City <i class="fas fa-external-link-square-alt" :hidden="!jwt"></i></button>
+                        <button :disabled="!jwt" class="btn btn-primary btn-lg flex-fill mx-1" @click="openLinkWithJwt" href="http://localhost:8080/api/v1/user">API: User <i class="fas fa-external-link-square-alt" :hidden="!jwt"></i></button>
                     </div>
                     <hr>
                     <h1>With ROLES</h1>
                     <div class="d-flex">
-                        <a class="btn btn-primary btn-lg flex-fill mx-1" @click="openLinkWithJwt" href="http://localhost:8080/api/v1/role-user">ROLE USER <i class="fas fa-external-link-square-alt" :hidden="!jwt"></i></a>
-                        <a class="btn btn-primary btn-lg flex-fill mx-1" @click="openLinkWithJwt" href="http://localhost:8080/api/v1/role-admin">ROLE ADMIN <i class="fas fa-external-link-square-alt" :hidden="!jwt"></i></a>
+                        <button :disabled="!jwt" class="btn btn-primary btn-lg flex-fill mx-1" @click="openLinkWithJwt" href="http://localhost:8080/api/v1/role-user">ROLE USER <i class="fas fa-external-link-square-alt" :hidden="!jwt"></i></button>
+                        <button :disabled="!jwt" class="btn btn-primary btn-lg flex-fill mx-1" @click="openLinkWithJwt" href="http://localhost:8080/api/v1/role-admin">ROLE ADMIN <i class="fas fa-external-link-square-alt" :hidden="!jwt"></i></button>
                     </div>
 
 
@@ -110,7 +110,7 @@
                     </div>
                 </div>
                 <div class="col-md-6 col-12" v-if="result">
-                    <pre>{{result}}</pre>
+                    <pre class="text-info">{{result}}</pre>
                 </div>
             </div>
             <div class="col-12 my-2" v-if="jwt!=null" id="jwt-info">
@@ -147,7 +147,7 @@
         data: {
             jwt: null,
             errorMsg: null,
-            result: null,
+            result: "Nothing yet",
             loading: false
         },
 
@@ -157,7 +157,8 @@
                 ev.preventDefault();
                 this.result = null;
                 if (!this.jwt) return;
-                var url = ev.target.href;
+                console.log(ev.target);
+                var url = ev.target.getAttribute("href");
                 axios.get(url, {
                         headers: {
                             "Authorization": "Bearer " + this.jwt
