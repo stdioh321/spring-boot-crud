@@ -1,11 +1,10 @@
 package com.stdioh321.crud.seeder;
 
-import com.stdioh321.crud.model.City;
-import com.stdioh321.crud.model.Role;
-import com.stdioh321.crud.model.State;
-import com.stdioh321.crud.model.User;
+import com.stdioh321.crud.model.*;
+import com.stdioh321.crud.repository.JwtCheckListRepository;
 import com.stdioh321.crud.repository.StateRepository;
 import com.stdioh321.crud.service.CityService;
+import com.stdioh321.crud.service.JwtCheckListService;
 import com.stdioh321.crud.service.RoleService;
 import com.stdioh321.crud.service.UserService;
 import com.stdioh321.crud.utils.Utils;
@@ -35,10 +34,23 @@ public class Db1Seeder {
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private JwtCheckListService jwtCheckListService;
+
+    @Autowired
+    private JwtCheckListRepository jwtCheckListRepository;
+
     @EventListener
     public void seedDb1(ContextRefreshedEvent event) {
         System.out.println("--- Db1Seeder Start ---");
         if (roleService.count() < 1 && userService.count() < 1) {
+            /*
+            JwtCheckList jcl = new JwtCheckList();
+            jcl.setToken("sadasd");
+            jcl.setBlacklist(true);
+            jwtCheckListService.post(jcl);
+            */
+
             Role r1 = new Role();
             r1.setName("ADMIN");
             roleService.post(r1);

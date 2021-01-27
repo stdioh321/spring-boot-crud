@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("${api.url}" + Routes.STATE)
+@RequestMapping("${api.url}/repository" + Routes.STATE)
 public class StateBasicControllerWithRepository extends BasicControllerWithRepository<State, UUID> {
 
     @Autowired

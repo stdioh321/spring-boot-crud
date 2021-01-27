@@ -21,6 +21,7 @@ import java.util.Objects;
 @MappedSuperclass
 public abstract class GenericService<T extends BasicModel, ID> implements IBasicService<T, ID> {
 
+    /*protected IRepositoryExtender<T, ID> repository;*/
     protected IRepositoryExtender<T, ID> repository;
 
 

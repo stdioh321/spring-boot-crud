@@ -2,8 +2,9 @@ package com.stdioh321.crud.filter;
 
 import com.stdioh321.crud.config.jwt.JwtTokenUtil;
 import com.stdioh321.crud.exception.RestGenericExecption;
-import com.stdioh321.crud.model.Role;
+import com.stdioh321.crud.model.JwtCheckList;
 import com.stdioh321.crud.service.CustomUserDetailsService;
+import com.stdioh321.crud.service.JwtCheckListService;
 import com.stdioh321.crud.utils.Routes;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +24,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Set;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Value("${api.url}")
     private String urlApi;
+
+    @Autowired
+    private JwtCheckListService jwtCheckListService;
 
     @Autowired
     private CustomUserDetailsService userDetailsService;
@@ -72,10 +75,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
             try {
 
-                if (JwtTokenUtil.blackList.contains(jwt)) {
-                    throw new Exception();
+                if (jwtCheckListService.isBlacklisted(jwt)) {
+                    throw new Exception("Token is Blacklisted");
                 }
-                JwtTokenUtil.blackList.add(jwt);
+                JwtCheckList j = new JwtCheckList();
+                j.setToken(jwt);
+                j.setBlacklist(true);
+                jwtCheckListService.post(j);
+                /*JwtTokenUtil.blackList.add(jwt);*/
                 String id = ex.getClaims().getSubject();
                 String refreshToken = jwtTokenUtil.generateCustomTokenWithId(ex.getClaims().getSubject(), request);
                 response.setHeader("Refresh-Token", refreshToken);
@@ -84,11 +91,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
 
             } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println(e.getClass());
                 var restGenericException = new RestGenericExecption("Invalid Token", ex, HttpStatus.UNAUTHORIZED, request.getServletPath(), null);
                 resolver.resolveException(request, response, null, restGenericException);
             }
 
         } catch (Exception ex) {
+            System.out.println(ex.getClass());
             var restGenericException = new RestGenericExecption("Invalid Token", ex, HttpStatus.UNAUTHORIZED, request.getServletPath(), null);
             resolver.resolveException(request, response, null, restGenericException);
 

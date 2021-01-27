@@ -31,7 +31,6 @@ public abstract class BasicControllerWithService<ENT extends BasicModel, ID> {
             Integer page,
             @RequestParam(defaultValue = "10") Integer size,
             @RequestParam(defaultValue = "id") String sort
-
     ) {
         if (Objects.isNull(page))
             return ResponseEntity.ok(service.getAll());

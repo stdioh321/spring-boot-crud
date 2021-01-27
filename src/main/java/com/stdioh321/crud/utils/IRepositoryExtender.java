@@ -3,12 +3,10 @@ package com.stdioh321.crud.utils;
 import com.stdioh321.crud.model.BasicModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -17,35 +15,35 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
-public interface IRepositoryExtender<T extends BasicModel, U> extends PagingAndSortingRepository<T, U> {
+public interface IRepositoryExtender<ENTITY extends BasicModel, ID> extends PagingAndSortingRepository<ENTITY, ID> {
 
     default Class<?> getEntityClass() {
-        return (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        return (Class<ENTITY>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
     @Query("SELECT e FROM #{#entityName} e")
-    List<T> findAll();
+    List<ENTITY> findAll();
 
     @Query("SELECT e FROM #{#entityName} e WHERE deleted_at IS NULL")
-    List<T> findAllActive();
+    List<ENTITY> findAllActive();
 
 
     @Query("SELECT e FROM #{#entityName} e WHERE id = ?1 AND  deleted_at IS NULL ")
-    Optional<T> findByIdActive(U u);
+    Optional<ENTITY> findByIdActive(ID ID);
 
     @Query("SELECT e FROM #{#entityName} e WHERE deleted_at <> NULL")
-    List<T> findTrashed();
+    List<ENTITY> findTrashed();
 
     @Query("SELECT e FROM #{#entityName} e WHERE id = ?1 AND  deleted_at <> NULL ")
-    Optional<T> findTrashedById(U u);
+    Optional<ENTITY> findTrashedById(ID ID);
 
 
-    default public Page<T> findPaginateActive(PageRequest pageRequest) {
+    default public Page<ENTITY> findPaginateActive(PageRequest pageRequest) {
         return findAll(pageRequest);
     }
 
-    default public Optional<T> deleteSoft(U id) {
-        var opt = findById(id);
+    default public Optional<ENTITY> deleteSoft(ID id) {
+        var opt = findByIdActive(id);
         if (opt.isEmpty()) return opt;
         var currentEntity = opt.get();
         currentEntity.setDeletedAt(new Date());
@@ -55,8 +53,8 @@ public interface IRepositoryExtender<T extends BasicModel, U> extends PagingAndS
 
     @Query("UPDATE #{#entityName} e SET deleted_at = NULL WHERE e.id = :id")
     @Modifying
-    default Optional<T> restore(@Param("id") U u) {
-        var opt = findTrashedById(u);
+    default Optional<ENTITY> restore(@Param("id") ID ID) {
+        var opt = findTrashedById(ID);
         if (opt.isEmpty()) return opt;
         var ent = opt.get();
 

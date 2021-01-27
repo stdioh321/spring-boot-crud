@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Optional;
 
 @Configuration
-@EnableJpaRepositories(basePackageClasses = {CityRepository.class}, entityManagerFactoryRef = "db1EntityManager", transactionManagerRef = "db1TranscationManager")
+@EnableJpaRepositories(basePackages = "com.stdioh321.crud.repository", entityManagerFactoryRef = "db1EntityManager", transactionManagerRef = "db1TranscationManager")
 @PropertySource("classpath:persistence-multiple-db.properties")
 @EnableJpaAuditing(auditorAwareRef = "auditorProvider")
 

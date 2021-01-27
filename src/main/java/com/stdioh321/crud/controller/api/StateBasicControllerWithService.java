@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("${api.url}/service-state")
+@RequestMapping("${api.url}/state")
 public class StateBasicControllerWithService extends BasicControllerWithService<State, UUID> {
 
     @Autowired
