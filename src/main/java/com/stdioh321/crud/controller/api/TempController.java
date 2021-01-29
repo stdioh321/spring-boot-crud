@@ -1,18 +1,13 @@
 package com.stdioh321.crud.controller.api;
 
-import com.stdioh321.crud.exception.EntityNotFoundException;
 import com.stdioh321.crud.exception.RestGenericExecption;
-import com.stdioh321.crud.repository.StatePaginationRespository;
 import com.stdioh321.crud.repository.StateRepository;
 import com.stdioh321.crud.service.StateService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Pageable;
 import java.util.UUID;
 
 @RestController
