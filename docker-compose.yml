@@ -1,0 +1,37 @@
+version: '2'
+
+services:
+  app:
+    build: .
+    ports:
+      - 8080:8080
+      - 5005:5005
+    environment:
+      - JAVA_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
+      - DB1_URL=jdbc:mysql://db:3306/dbname?createDatabaseIfNotExist=true
+      - DB1_DIALECT=org.hibernate.dialect.MySQL8Dialect
+      - DB1_DRIVER=com.mysql.cj.jdbc.Driver
+      - DB1_USER=root
+      - DB1_PASS=
+      - DB1_HBM2DDL=update
+    networks:
+      - frontend
+      - backend
+
+  db:
+    image: mysql
+    ports:
+      - 3305:3306
+    environment:
+      - MYSQL_USER=root
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+    networks:
+      - backend
+#    volumes:
+#      - /var/lib/mysql:/var/lib/mysql
+#      - /var/run/mysqld:/var/run/mysqld
+
+networks:
+  frontend:
+  backend:

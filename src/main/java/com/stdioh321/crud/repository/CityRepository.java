@@ -8,4 +8,4 @@ import java.util.UUID;
 
 
 @Repository
-public interface CityRepository extends IRepositoryExtender <City, UUID> {}
+public interface CityRepository extends IRepositoryExtender <City, String> {}

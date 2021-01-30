@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface UserRepository extends IRepositoryExtender<User, UUID> {
+public interface UserRepository extends IRepositoryExtender<User, String> {
     /*@Query("SELECT u FROM User u WHERE deleted_at <> NULL AND email=?1")
     User findByEmail(String email);*/
 

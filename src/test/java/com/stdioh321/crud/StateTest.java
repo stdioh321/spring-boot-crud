@@ -1,8 +1,6 @@
 package com.stdioh321.crud;
 
 import com.stdioh321.crud.exception.EntityNotFoundException;
-import com.stdioh321.crud.model.AuthRequest;
-import com.stdioh321.crud.model.AuthResponse;
 import com.stdioh321.crud.model.State;
 import com.stdioh321.crud.service.StateService;
 import com.stdioh321.crud.utils.Utils;
@@ -14,22 +12,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.request;
 
 
 @SpringBootTest
@@ -56,8 +47,13 @@ class StateTest {
 
 
     @Test
+    @Transactional
     public void controllerShouldHaveStateById() throws Exception {
-        var tempState = stateService.getAll().stream().findFirst().orElseThrow(() -> new EntityNotFoundException(null, "State"));
+        State tempState = new State();
+        tempState.setName(Utils.getRandomString(20));
+        tempState.setInitial(Utils.getRandomString(2));
+        tempState = stateService.post(tempState);
+
         var result = UtilsTest.getInstance(mockMvc).doAuthRequest("/api/v1/state/" + tempState.getId())
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn().getResponse().getContentAsString();
         State state = Utils.mapFromGson(result, State.class);

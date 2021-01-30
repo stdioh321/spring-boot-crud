@@ -22,7 +22,7 @@ public class JwtCheckList extends BasicModel {
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private UUID id;
+    private String id;
 
     @NotBlank
     @NotNull

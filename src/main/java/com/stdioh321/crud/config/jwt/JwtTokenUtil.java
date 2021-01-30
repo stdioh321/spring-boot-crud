@@ -100,14 +100,14 @@ public class JwtTokenUtil implements Serializable {
     }
 
     public String generateCustomTokenWithId(String id, HttpServletRequest request) {
-        User tempUser = userService.getById(UUID.fromString(id));
-        HashMap claims = new HashMap();
+        User tempUser = userService.getById(id);
+        var claims = new HashMap();
         claims.put("user-agent", request.getHeader("User-Agent"));
         claims.put("ip", request.getRemoteAddr());
         claims.put("id", tempUser.getId());
         claims.put("roles", tempUser.getRoleNames());
 
-        return doGenerateToken(claims, tempUser.getId().toString());
+        return doGenerateToken(claims, tempUser.getId());
     }
 
 }

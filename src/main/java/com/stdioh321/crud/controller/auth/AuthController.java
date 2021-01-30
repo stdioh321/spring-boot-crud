@@ -46,6 +46,7 @@ public class AuthController {
             /*System.out.println(user.getAuthorities());*/
 
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RestGenericExecption("Incorrect username or password", e, HttpStatus.UNAUTHORIZED, null, null);
         }
         return ResponseEntity.ok(new AuthResponse(jwtTokenUtil.generateCustomTokenWithId(user.getUsername(), request)));
@@ -54,7 +55,7 @@ public class AuthController {
     @GetMapping("${api.url}" + Routes.ME)
     public ResponseEntity<?> me() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
-        return ResponseEntity.ok(userService.getById(UUID.fromString(auth.getName())));
+        return ResponseEntity.ok(userService.getById(auth.getName()));
     }
 
 }

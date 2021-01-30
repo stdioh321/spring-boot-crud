@@ -4,139 +4,165 @@
 <head>
     <meta charset="UTF-8">
     <title>Index</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+          integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+          integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
+          crossorigin="anonymous"/>
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+            integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+            crossorigin="anonymous"></script>
 </head>
 
 <body>
-    <div id="app">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 col-12">
-                    <form class="form" action="/api/v1/authenticate" method="POST" @submit="onSubmit">
-                        <h1>Get the Token</h1>
+<div id="app">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-12">
+                <form class="form" action="/api/v1/authenticate" method="POST" @submit="onSubmit">
+                    <h1>Get the Token</h1>
 
-                        <div class="form-group row">
-                            <label for="" class="col-12 font-weight-bold">Username</label>
-                            <div class="col-12">
-                                <input type="text" class="form-control" name="username" placeholder="username" value="test" required/>
-                            </div>
+                    <div class="form-group row">
+                        <label for="" class="col-12 font-weight-bold">Username</label>
+                        <div class="col-12">
+                            <input type="text" class="form-control" name="username" placeholder="username" value="test"
+                                   required/>
+                        </div>
 
-                        </div>
-                        <div class="form-group row">
-                            <label for="" class="col-12  font-weight-bold">Password</label>
-                            <div class="col-12">
-                                <input type="password" class="form-control" name="password" placeholder="password" minlength="8" value="Test@4231" required/>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-6 offset-6">
-                                <button type="submit" class="btn btn-block btn-primary btn-lg" :disabled="loading">
-                                    <template v-if="loading==true">
-                                        <span class="">Loading...</span>
-                                        <div class="spinner-border spinner-border-sm" >
-                                            
-                                        </div>
-                                    </template>
-                                    <template v-else>Send</template>
-
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="col-md-6 col-12 d-flex align-items-center">
-                    <div class="row w-100">
-                        <div class="col-6">
-                            <div class="border p-1">
-                                User: test <br> Pass: Test@4231 <br> Roles: USER
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="border p-1">
-                                User: root <br> Pass: Root@4231 <br> Roles: ADMIN,USER
-                            </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="" class="col-12  font-weight-bold">Password</label>
+                        <div class="col-12">
+                            <input type="password" class="form-control" name="password" placeholder="password"
+                                   minlength="8" value="Test@4231" required/>
                         </div>
                     </div>
-                </div>
-                <hr>
+                    <div class="form-group row">
+                        <div class="col-6 offset-6">
+                            <button type="submit" class="btn btn-block btn-primary btn-lg" :disabled="loading">
+                                <template v-if="loading==true">
+                                    <span class="">Loading...</span>
+                                    <div class="spinner-border spinner-border-sm">
 
+                                    </div>
+                                </template>
+                                <template v-else>Send</template>
 
-                <div class="col-12" v-if="errorMsg!=null">
-                    <div class="text-danger">
-                        {{errorMsg}}
+                            </button>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
 
-            <div class="row">
-                <div class="col-md-6 col-12">
-                    <h1>API</h1>
-                    <h4>
-                        Api is only available with a valid JWT TOKEN
-                    </h4>
-                    <div class="d-flex">
-                        <button :disabled="!jwt" class="btn btn-primary btn-lg flex-fill mx-1" @click="openLinkWithJwt" href="http://localhost:8080/api/v1/state">API: State 
-                            <i class="fas fa-external-link-square-alt" :hidden="!jwt"></i>
-                        </button>
-                        <button :disabled="!jwt" class="btn btn-primary btn-lg flex-fill mx-1 " @click="openLinkWithJwt" href="http://localhost:8080/api/v1/city">API: City <i class="fas fa-external-link-square-alt" :hidden="!jwt"></i></button>
-                        <button :disabled="!jwt" class="btn btn-primary btn-lg flex-fill mx-1" @click="openLinkWithJwt" href="http://localhost:8080/api/v1/user">API: User <i class="fas fa-external-link-square-alt" :hidden="!jwt"></i></button>
-                    </div>
-                    <hr>
-                    <h1>With ROLES</h1>
-                    <div class="d-flex">
-                        <button :disabled="!jwt" class="btn btn-primary btn-lg flex-fill mx-1" @click="openLinkWithJwt" href="http://localhost:8080/api/v1/role-user">ROLE USER <i class="fas fa-external-link-square-alt" :hidden="!jwt"></i></button>
-                        <button :disabled="!jwt" class="btn btn-primary btn-lg flex-fill mx-1" @click="openLinkWithJwt" href="http://localhost:8080/api/v1/role-admin">ROLE ADMIN <i class="fas fa-external-link-square-alt" :hidden="!jwt"></i></button>
-                    </div>
-
-
-                    <hr>
-
-                    <h1>OpenApi and Swagger</h1>
-                    <div class="d-flex">
-
-                        <a href="http://localhost:8080/v3/api-docs" target="_blank" class="btn btn-primary btn-lg flex-fill mx-1">OpenApi <i class="fas fa-external-link-square-alt" ></i>
-                        </a>
-
-
-                        <a href="http://localhost:8080/swagger-ui.html" target="_blank" class="btn btn-primary btn-lg flex-fill mx-1">Swagger UI <i class="fas fa-external-link-square-alt" ></i>
-                        </a>
-
-                    </div>
-                </div>
-                <div class="col-md-6 col-12" v-if="result">
-                    <pre class="text-info">{{result}}</pre>
-                </div>
-            </div>
-            <div class="col-12 my-2" v-if="jwt!=null" id="jwt-info">
-                <div class="row">
+            <div class="col-md-6 col-12 d-flex align-items-center justify-content-center flex-column">
+                <div class="row w-100" v-if="db != null">
                     <div class="col-12">
-                        <h1>JWT</h1>
+                        <span class="font-weight-bolder">DB: </span>{{db}}
                     </div>
-                    <div class="col-md-6">
-                        <div class="text-warning text-break">
-                            {{jwt}}
+                </div>
+                <hr />
+                <div class="row w-100">
+                    <div class="col-6">
+                        <div class="border p-1">
+                            User: test <br> Pass: Test@4231 <br> Roles: USER
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="text-success text-break">
-                            {{jwt | parseJwt}}
+                    <div class="col-6">
+                        <div class="border p-1">
+                            User: root <br> Pass: Root@4231 <br> Roles: ADMIN,USER
                         </div>
                     </div>
                 </div>
+            </div>
+            <hr>
 
+
+            <div class="col-12" v-if="errorMsg!=null">
+                <div class="text-danger">
+                    {{errorMsg}}
+                </div>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-md-6 col-12">
+                <h1>API</h1>
+                <h4>
+                    Api is only available with a valid JWT TOKEN
+                </h4>
+                <div class="d-flex">
+                    <button :disabled="!jwt" class="btn btn-primary btn-lg flex-fill mx-1" @click="openLinkWithJwt"
+                            href="http://localhost:8080/api/v1/state">API: State
+                        <i class="fas fa-external-link-square-alt" :hidden="!jwt"></i>
+                    </button>
+                    <button :disabled="!jwt" class="btn btn-primary btn-lg flex-fill mx-1 " @click="openLinkWithJwt"
+                            href="http://localhost:8080/api/v1/city">API: City <i
+                            class="fas fa-external-link-square-alt" :hidden="!jwt"></i></button>
+                    <button :disabled="!jwt" class="btn btn-primary btn-lg flex-fill mx-1" @click="openLinkWithJwt"
+                            href="http://localhost:8080/api/v1/user">API: User <i
+                            class="fas fa-external-link-square-alt" :hidden="!jwt"></i></button>
+                </div>
+                <hr>
+                <h1>With ROLES</h1>
+                <div class="d-flex">
+                    <button :disabled="!jwt" class="btn btn-primary btn-lg flex-fill mx-1" @click="openLinkWithJwt"
+                            href="http://localhost:8080/api/v1/role-user">ROLE USER <i
+                            class="fas fa-external-link-square-alt" :hidden="!jwt"></i></button>
+                    <button :disabled="!jwt" class="btn btn-primary btn-lg flex-fill mx-1" @click="openLinkWithJwt"
+                            href="http://localhost:8080/api/v1/role-admin">ROLE ADMIN <i
+                            class="fas fa-external-link-square-alt" :hidden="!jwt"></i></button>
+                </div>
+
+
+                <hr>
+
+                <h1>OpenApi and Swagger</h1>
+                <div class="d-flex">
+
+                    <a href="http://localhost:8080/v3/api-docs" target="_blank"
+                       class="btn btn-primary btn-lg flex-fill mx-1">OpenApi <i
+                            class="fas fa-external-link-square-alt"></i>
+                    </a>
+
+
+                    <a href="http://localhost:8080/swagger-ui.html" target="_blank"
+                       class="btn btn-primary btn-lg flex-fill mx-1">Swagger UI <i
+                            class="fas fa-external-link-square-alt"></i>
+                    </a>
+
+                </div>
+            </div>
+            <div class="col-md-6 col-12" v-if="result">
+                <pre class="text-info">{{result}}</pre>
+            </div>
+        </div>
+        <div class="col-12 my-2" v-if="jwt!=null" id="jwt-info">
+            <div class="row">
+                <div class="col-12">
+                    <h1>JWT</h1>
+                </div>
+                <div class="col-md-6">
+                    <div class="text-warning text-break">
+                        {{jwt}}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="text-success text-break">
+                        {{jwt | parseJwt}}
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
+</div>
 
 </body>
 <script>
-    Vue.filter('parseJwt', function(value) {
+    Vue.filter('parseJwt', function (value) {
         console.log(value);
         if (!value) return '';
         value = parseJwt(value);
@@ -148,22 +174,23 @@
             jwt: null,
             errorMsg: null,
             result: "Nothing yet",
-            loading: false
+            loading: false,
+            db: null
         },
 
         methods: {
 
-            openLinkWithJwt: function(ev) {
+            openLinkWithJwt: function (ev) {
                 ev.preventDefault();
                 this.result = null;
                 if (!this.jwt) return;
                 console.log(ev.target);
                 var url = ev.target.getAttribute("href");
                 axios.get(url, {
-                        headers: {
-                            "Authorization": "Bearer " + this.jwt
-                        }
-                    })
+                    headers: {
+                        "Authorization": "Bearer " + this.jwt
+                    }
+                })
                     .then(res => {
                         this.result = res.data;
                     })
@@ -178,7 +205,7 @@
 
             },
 
-            onSubmit: async function(ev) {
+            onSubmit: async function (ev) {
                 ev.preventDefault();
                 if (this.loading == true) return;
                 this.jwt = null;
@@ -207,6 +234,15 @@
                         this.loading = false;
                     });
             }
+        },
+        mounted: function () {
+            axios.get("/temp/db")
+                .then(res => {
+                    this.db = res.data;
+                })
+                .catch(err => {
+                    console.log(err);
+                });
         }
     });
 
@@ -234,7 +270,7 @@
             }, milliseconds);
         });
         return p1.then(); */
-        return (function() {
+        return (function () {
             return new Promise((resolve, reject) => {
                 setTimeout(() => {
                     resolve(true);

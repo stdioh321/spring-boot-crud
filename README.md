@@ -42,3 +42,13 @@ Open your browser at the url:<br>
 # References
 * [Spring Boot](https://spring.io/projects/spring-boot)
 * [Swagger UI](https://swagger.io/tools/swagger-ui/)
+
+
+docker run -p 3305:3306 -e MYSQL_ROOT_PASSWORD= -e MYSQL_ALLOW_EMPTY_PASSWORD=true mysql
+
+
+gradle build -x test
+java -Dspring.profiles.active=local -jar build/libs/crud.war 
+
+
+mysql -u root -p -h localhost -P 3305 --protocol=tcp

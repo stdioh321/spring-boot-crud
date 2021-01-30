@@ -6,14 +6,9 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.UUID;
 
 
 @Service
@@ -29,7 +24,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     public UserDetails loadUserById(String id) {
-        var tempUser = userService.getById(UUID.fromString(id));
+        var tempUser = userService.getById(id);
         if (tempUser == null) throw new BadCredentialsException("Invalid Credentials");
         return new User(tempUser.getId().toString(), tempUser.getPassword(), tempUser.getRoles());
     }

@@ -26,7 +26,7 @@ import java.util.Optional;
 )
 
 
-@PropertySource("classpath:persistence-multiple-db.properties")
+//@PropertySource("classpath:persistence-multiple-db.properties")
 @EnableJpaAuditing(auditorAwareRef = "db1AuditorProvider")
 
 public class Db1Config {
@@ -56,21 +56,6 @@ public class Db1Config {
         dataSource.setPassword(env.getProperty("db1.pass"));
         return dataSource;
     }
-
-    /*
-
-    @Bean("dbTestDataSource")
-    public DataSource dbTestDataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(env.getProperty("db.test.driver"));
-        dataSource.setUrl(env.getProperty("db.test.url"));
-        dataSource.setUsername(env.getProperty("db.test.user"));
-        dataSource.setPassword(env.getProperty("db.test.pass"));
-        return dataSource;
-    }
-    */
-
-
     @Bean("db1EntityManager")
     public LocalContainerEntityManagerFactoryBean db1EntityManager() {
 

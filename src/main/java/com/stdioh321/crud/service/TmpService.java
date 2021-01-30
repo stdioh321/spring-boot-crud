@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class TmpService extends GenericService<City, UUID> {
+public class TmpService extends GenericService<City, String> {
     @Autowired
     public TmpService(CityRepository repository) {
         super(repository);

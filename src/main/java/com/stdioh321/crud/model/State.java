@@ -1,21 +1,17 @@
 package com.stdioh321.crud.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
-import org.hibernate.annotations.*;
+import lombok.Data;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.util.Locale;
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity
 @Data
@@ -34,7 +30,7 @@ public class State extends BasicModel {
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private UUID id;
+    private String id;
 
     @NotNull
     @Column(nullable = false, unique = true)

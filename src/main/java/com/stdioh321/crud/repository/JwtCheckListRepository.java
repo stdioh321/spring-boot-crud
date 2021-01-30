@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface JwtCheckListRepository extends IRepositoryExtender<JwtCheckList, UUID> {
+public interface JwtCheckListRepository extends IRepositoryExtender<JwtCheckList, String> {
 
     /*@Query("SELECT j FROM JwtCheckList j WHERE token = ?1")
     Optional<JwtCheckList> findByJwt(String jwt);*/

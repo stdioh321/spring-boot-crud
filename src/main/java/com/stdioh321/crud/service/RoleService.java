@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class RoleService extends GenericService<Role, UUID> {
+public class RoleService extends GenericService<Role, String> {
     public RoleService(RoleRepository repository) {
         super(repository);
     }

@@ -9,4 +9,4 @@ import java.util.UUID;
 
 
 @Repository
-public interface StateCommonRepository extends JpaRepository<State, UUID> {}
+public interface StateCommonRepository extends JpaRepository<State, String> {}

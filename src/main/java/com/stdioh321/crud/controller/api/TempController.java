@@ -4,6 +4,7 @@ import com.stdioh321.crud.exception.RestGenericExecption;
 import com.stdioh321.crud.repository.StateRepository;
 import com.stdioh321.crud.service.StateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,10 @@ public class TempController {
     @Autowired
     private StateService stateService;
 
+    @Value("${db1.url}")
+    private String dbUrl;
+
+
     @Autowired
     private StateRepository stateRepository;
 
@@ -26,15 +31,7 @@ public class TempController {
 
     @GetMapping("{id}")
     public ResponseEntity getById(@PathVariable("id") String id) {
-        UUID tempId;
-
-        try {
-            tempId = UUID.fromString(id);
-
-        } catch (Exception e) {
-            throw new RestGenericExecption("Invalid Argument", HttpStatus.BAD_REQUEST, id, "state");
-        }
-        return ResponseEntity.ok(stateService.getById(tempId));
+        return ResponseEntity.ok(stateService.getById(id));
     }
 
 
@@ -47,5 +44,11 @@ public class TempController {
 
         return ResponseEntity.ok(stateService.getPaginated(page,size));
     }
+
+    @GetMapping("/db")
+    public ResponseEntity db(){
+        return ResponseEntity.ok(dbUrl);
+    }
+
 
 }
