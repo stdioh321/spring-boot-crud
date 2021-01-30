@@ -1,10 +1,14 @@
 package com.stdioh321.crud.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
-@Data
+import java.io.Serializable;
+
+@Getter
+@Builder
+@NoArgsConstructor
 @AllArgsConstructor
-public class AuthResponse {
-    private final String jwt;
+public class AuthResponse implements Serializable {
+    private String jwt;
+
 }

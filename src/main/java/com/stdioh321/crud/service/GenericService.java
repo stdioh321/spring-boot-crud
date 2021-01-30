@@ -60,9 +60,7 @@ public abstract class GenericService<T extends BasicModel, ID> implements IBasic
 
     @Override
     public T delete(ID id) {
-        var entity = repository.findByIdActive(id).orElseThrow(() -> new EntityNotFoundException(id.toString(), null));
-        repository.delete(entity);
-        /*repository.flush();*/
+        var entity = repository.deleteSoft(id).orElseThrow(() -> new EntityNotFoundException(id.toString(), null));
         return entity;
     }
 

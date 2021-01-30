@@ -113,9 +113,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (jwtTokenUtil.validateToken(jwt, userDetails)) {
 
             var claims = jwtTokenUtil.getAllClaimsFromToken(jwt);
-            if (!claims.get("user-agent").equals(request.getHeader("User-Agent")))
+
+            /*if (!claims.get("user-agent").equals(request.getHeader("User-Agent")))
                 throw new Exception("Invalid User-Agent");
-            if (!claims.get("ip").equals(request.getRemoteAddr())) throw new Exception("Invalid IP");
+            if (!claims.get("ip").equals(request.getRemoteAddr())) throw new Exception("Invalid IP");*/
 
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

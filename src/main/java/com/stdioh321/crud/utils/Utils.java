@@ -1,12 +1,24 @@
 package com.stdioh321.crud.utils;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.stdioh321.crud.model.AuthRequest;
+import com.stdioh321.crud.model.AuthResponse;
 import com.stdioh321.crud.model.BasicModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Objects;
 
 public class Utils {
+
 
     public static <T> T mergeObjects(T first, T second) throws IllegalAccessException {
         Field[] fields = second.getClass().getDeclaredFields();
@@ -47,6 +59,31 @@ public class Utils {
 
         return sb.toString();
 
+    }
+
+
+
+    public static String mapToJson(Object obj) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(obj);
+    }
+
+    public static <T> T mapFromJson(String json, Class<T> clazz)
+            throws JsonParseException, JsonMappingException, IOException {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(json, clazz);
+    }
+
+    public static String mapToGson(Object obj) {
+        Gson g = new Gson();
+        return g.toJson(obj);
+    }
+
+    public static <T> T mapFromGson(String json, Class<T> clazz) {
+        Gson g = new Gson();
+
+        return g.fromJson(json, clazz);
     }
 
 

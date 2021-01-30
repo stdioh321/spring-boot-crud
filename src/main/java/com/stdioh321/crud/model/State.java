@@ -1,7 +1,7 @@
 package com.stdioh321.crud.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.*;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.boot.context.properties.bind.DefaultValue;
@@ -22,10 +22,12 @@ import java.util.UUID;
 @DynamicUpdate
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "state")
+
 /*@SQLDelete(sql = "UPDATE State SET deleted_at=CURRENT_TIME,updated_at=CURRENT_TIME WHERE id=?")*/
 /*
 @Where(clause = "deleted_at IS NULL")
 */
+
 
 public class State extends BasicModel {
     @Id
