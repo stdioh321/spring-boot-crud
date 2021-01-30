@@ -17,6 +17,8 @@ services:
     networks:
       - frontend
       - backend
+    links:
+      - db
 
   db:
     image: mysql
