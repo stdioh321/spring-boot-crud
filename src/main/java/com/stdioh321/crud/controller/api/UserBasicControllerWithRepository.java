@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("${api.url}/user")
-public class UserBasicControllerWithRepository extends BasicControllerWithRepository<User, UUID> {
+public class UserBasicControllerWithRepository extends BasicControllerWithRepository<User, String> {
 
     @Autowired
     public UserBasicControllerWithRepository(UserRepository repository) {
@@ -26,7 +26,7 @@ public class UserBasicControllerWithRepository extends BasicControllerWithReposi
     }
 
     @Override
-        public ResponseEntity<User> getById(UUID uuid) {
+        public ResponseEntity<User> getById(String uuid) {
         return super.getById(uuid);
     }
 }

@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("${api.url}/repository" + Routes.STATE)
-public class StateBasicControllerWithRepository extends BasicControllerWithRepository<State, UUID> {
+public class StateBasicControllerWithRepository extends BasicControllerWithRepository<State, String> {
 
     @Autowired
     public StateBasicControllerWithRepository(StateRepository repository) {

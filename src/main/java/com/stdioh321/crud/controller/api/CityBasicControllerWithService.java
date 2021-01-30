@@ -13,7 +13,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("${api.url}" + Routes.CITY)
 
-public class CityBasicControllerWithService extends BasicControllerWithService<City, UUID> {
+public class CityBasicControllerWithService extends BasicControllerWithService<City, String> {
 
     @Autowired
     public CityBasicControllerWithService(CityService service) {

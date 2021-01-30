@@ -10,11 +10,13 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("${api.url}/state")
-public class StateBasicControllerWithService extends BasicControllerWithService<State, UUID> {
+public class StateBasicControllerWithService extends BasicControllerWithService<State, String> {
 
     @Autowired
     public StateBasicControllerWithService(StateService service) {
         super(service);
 
     }
+
+
 }
