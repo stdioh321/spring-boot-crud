@@ -2,9 +2,9 @@
 
 if [ -n "$PORT" ]
 then
-  export SERVER_PORT = $PORT
+  export SERVER_PORT=$PORT
 fi
-
+echo $SERVER_PORT
 if [ -n "$ENABLE_DEBUG" -a "$ENABLE_DEBUG" == false ]
 then
   java -jar crud.war
