@@ -39,16 +39,56 @@ Open your browser at the url:<br>
 
 ![Swagger UI](docs/screenshots/screenshot_swagger_01.png)
 
+
+# Run With Docker
+
+In the root path of the project the is a Dockerfile with the configs to run it with docker. 
+
+** *Make sure the docker service is up and running ** 
+```shell
+docker build . -t sb-crud:1.0
+# check if the image was created
+docker images
+```
+
+![Docker Image](docs/screenshots/screenshot_docker_01.png)
+
+```shell
+docker run -p8080:8080 -p5005:5005 -eENABLE_DEBUG=true --rm sb-crud:1.0
+```
+Open your browser at the url:<br>
+### **http://localhost:8080**
+
+Also the port 5005 is opened to debug purposes 
+
+# Run with docker-compose
+```shell
+docker-compose up
+```
+Open your browser at the url:<br>
+### **http://localhost:8080**
+
+Also the port 5005 is opened to debug purposes
+
+**The docker-compose was created  using a mysql database and it's port is exported at 3305**
+
+***Credentials:**
+```diff
+- username=root
+- password=[EMPTY]
+```
+
+
+Connect to it:
+```shell
+mysql -uroot -P3305 --protocol TCP
+```
+
+
+![Mysql 01](docs/screenshots/screenshot_mysql_01.png)
+
 # References
 * [Spring Boot](https://spring.io/projects/spring-boot)
 * [Swagger UI](https://swagger.io/tools/swagger-ui/)
 
 
-docker run -p 3305:3306 -e MYSQL_ROOT_PASSWORD= -e MYSQL_ALLOW_EMPTY_PASSWORD=true mysql
-
-
-gradle build -x test
-java -Dspring.profiles.active=local -jar build/libs/crud.war 
-
-
-mysql -u root -p -h localhost -P 3305 --protocol=tcp

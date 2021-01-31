@@ -4,8 +4,10 @@ WORKDIR /tmp
 RUN gradle build -x test
 
 FROM openjdk:11-jre-slim as runtime
-COPY --from=builder /tmp/build/libs/crud.war /
-COPY --from=builder /tmp/entrypoint.sh /
+RUN mkdir /app
+COPY --from=builder /tmp/build/libs/crud.war /app
+COPY --from=builder /tmp/entrypoint.sh /app
+WORKDIR /app
 EXPOSE 8080 5005
 
 # CMD java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -jar crud.war

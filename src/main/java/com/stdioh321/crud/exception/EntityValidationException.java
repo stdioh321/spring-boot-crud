@@ -1,15 +1,13 @@
 package com.stdioh321.crud.exception;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.validation.FieldError;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 
 public class EntityValidationException extends RuntimeException{
     private String message = "Validation Error";

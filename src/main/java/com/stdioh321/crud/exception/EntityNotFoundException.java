@@ -1,9 +1,11 @@
 package com.stdioh321.crud.exception;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.http.HttpStatus;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class EntityNotFoundException extends RuntimeException {
     private String message;
     private String rejectedValue;

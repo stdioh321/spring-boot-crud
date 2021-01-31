@@ -1,9 +1,6 @@
 package com.stdioh321.crud.exception;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.ObjectError;
 
@@ -12,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 
 public class RestGenericExecption extends RuntimeException {
 
