@@ -1,4 +1,4 @@
-# spring-boot-crud
+# spring-boot-boilerplate
 Api Rest Crud with Java + Spring Boot + Swagger UI
 
 # Requirements
