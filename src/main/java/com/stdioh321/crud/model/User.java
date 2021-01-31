@@ -4,6 +4,7 @@ package com.stdioh321.crud.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "user")
 @Data
-
+@EqualsAndHashCode(callSuper=false)
 public class User extends BasicModel {
     @Id
     @GeneratedValue(generator = "UUID")

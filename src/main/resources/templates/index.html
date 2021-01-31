@@ -88,6 +88,16 @@
         </div>
 
         <div class="row">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="d-flex">
+                            <a  href="/temp" target="_blank" class="btn btn-primary btn-lg flex-fill mx-1">Temp</a >
+                            <a  href="/temp/db" target="_blank" class="btn btn-primary btn-lg flex-fill mx-1">DB</a >
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-6 col-12">
                 <h1>API</h1>
                 <h4>
@@ -95,24 +105,24 @@
                 </h4>
                 <div class="d-flex">
                     <button :disabled="!jwt" class="btn btn-primary btn-lg flex-fill mx-1" @click="openLinkWithJwt"
-                            href="http://localhost:8080/api/v1/state">API: State
+                            href="/api/v1/state">API: State
                         <i class="fas fa-external-link-square-alt" :hidden="!jwt"></i>
                     </button>
                     <button :disabled="!jwt" class="btn btn-primary btn-lg flex-fill mx-1 " @click="openLinkWithJwt"
-                            href="http://localhost:8080/api/v1/city">API: City <i
+                            href="/api/v1/city">API: City <i
                             class="fas fa-external-link-square-alt" :hidden="!jwt"></i></button>
                     <button :disabled="!jwt" class="btn btn-primary btn-lg flex-fill mx-1" @click="openLinkWithJwt"
-                            href="http://localhost:8080/api/v1/user">API: User <i
+                            href="/api/v1/user">API: User <i
                             class="fas fa-external-link-square-alt" :hidden="!jwt"></i></button>
                 </div>
                 <hr>
                 <h1>With ROLES</h1>
                 <div class="d-flex">
                     <button :disabled="!jwt" class="btn btn-primary btn-lg flex-fill mx-1" @click="openLinkWithJwt"
-                            href="http://localhost:8080/api/v1/role-user">ROLE USER <i
+                            href="/api/v1/role-user">ROLE USER <i
                             class="fas fa-external-link-square-alt" :hidden="!jwt"></i></button>
                     <button :disabled="!jwt" class="btn btn-primary btn-lg flex-fill mx-1" @click="openLinkWithJwt"
-                            href="http://localhost:8080/api/v1/role-admin">ROLE ADMIN <i
+                            href="/api/v1/role-admin">ROLE ADMIN <i
                             class="fas fa-external-link-square-alt" :hidden="!jwt"></i></button>
                 </div>
 
@@ -122,13 +132,13 @@
                 <h1>OpenApi and Swagger</h1>
                 <div class="d-flex">
 
-                    <a href="http://localhost:8080/v3/api-docs" target="_blank"
+                    <a href="/v3/api-docs" target="_blank"
                        class="btn btn-primary btn-lg flex-fill mx-1">OpenApi <i
                             class="fas fa-external-link-square-alt"></i>
                     </a>
 
 
-                    <a href="http://localhost:8080/swagger-ui.html" target="_blank"
+                    <a href="/swagger-ui.html" target="_blank"
                        class="btn btn-primary btn-lg flex-fill mx-1">Swagger UI <i
                             class="fas fa-external-link-square-alt"></i>
                     </a>
@@ -221,7 +231,7 @@
                     password: password
                 };
                 await sleepWithPromise();
-                axios.post("http://localhost:8080/api/v1/authenticate", json)
+                axios.post("/api/v1/authenticate", json)
                     .then((res) => {
                         this.jwt = res.data.jwt;
                         this.loading = false;

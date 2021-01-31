@@ -26,23 +26,12 @@ public class TempController {
 
     @GetMapping
     public ResponseEntity get() {
-        return ResponseEntity.ok(stateService.getAll());
+        return ResponseEntity.ok("Hello, I'm the temp Controller");
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/state/{id}")
     public ResponseEntity getById(@PathVariable("id") String id) {
         return ResponseEntity.ok(stateService.getById(id));
-    }
-
-
-    @GetMapping("/pagination")
-    public ResponseEntity getByPagination(
-            @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "10") Integer size,
-            @RequestParam(defaultValue = "id") String sort
-    ) {
-
-        return ResponseEntity.ok(stateService.getPaginated(page,size));
     }
 
     @GetMapping("/db")

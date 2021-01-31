@@ -2,6 +2,7 @@ package com.stdioh321.crud.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Length;
@@ -15,6 +16,7 @@ import java.util.Objects;
 
 @Entity
 @Data
+@EqualsAndHashCode(callSuper=false)
 @DynamicUpdate
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "state")

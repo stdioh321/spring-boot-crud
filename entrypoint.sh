@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [ -n "$PORT" ]
+then
+  export SERVER_PORT = $PORT
+fi
 
 if [ -n "$ENABLE_DEBUG" -a "$ENABLE_DEBUG" == false ]
 then

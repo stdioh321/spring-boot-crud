@@ -2,6 +2,7 @@ package com.stdioh321.crud.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
@@ -18,6 +19,7 @@ import java.util.UUID;
 @Table(name = "city")
 @DynamicUpdate
 @Data
+@EqualsAndHashCode(callSuper=false)
 @EntityListeners(AuditingEntityListener.class)
 /*@SQLDelete(sql = "UPDATE City SET deleted_at=CURRENT_TIME,updated_at=CURRENT_TIME WHERE id=?", callable = true)*/
 /*

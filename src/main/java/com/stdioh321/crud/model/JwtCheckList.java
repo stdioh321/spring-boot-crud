@@ -3,6 +3,7 @@ package com.stdioh321.crud.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @Table(name = "jwt_check_list")
 @DynamicUpdate
 @Data
+@EqualsAndHashCode(callSuper=false)
 @EntityListeners(AuditingEntityListener.class)
 public class JwtCheckList extends BasicModel {
     @Id
