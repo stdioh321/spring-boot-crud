@@ -5,6 +5,7 @@ Api Rest Crud with Java + Spring Boot + Swagger UI
 1. [Sdkman](https://sdkman.io/install)
 2. [Java (JRE/JDK)](https://openjdk.java.net/install/index.html)
 3. [Gradle](https://gradle.org/install/)
+4. [Docker **(Optional)**](https://www.docker.com/products/docker-desktop)
 
 # Setup
 ### **With sdkman installed:**
@@ -44,14 +45,14 @@ Open your browser at the url:<br>
 
 In the root path of the project the is a Dockerfile with the configs to run it with docker. 
 
-** *Make sure the docker service is up and running ** 
+***Make sure the docker service is up and running** 
 ```shell
 docker build . -t sb-crud:1.0
 # check if the image was created
 docker images
 ```
 
-![Docker Image](docs/screenshots/screenshot_docker_01.png)
+![Docker Image 01](docs/screenshots/screenshot_docker_01.png)
 
 ```shell
 docker run -p8080:8080 -p5005:5005 -eENABLE_DEBUG=true --rm sb-crud:1.0
@@ -64,7 +65,11 @@ Also the port 5005 is opened to debug purposes
 # Run with docker-compose
 ```shell
 docker-compose up
+docker images
 ```
+
+![Docker Image 02](docs/screenshots/screenshot_docker_02.png)
+
 Open your browser at the url:<br>
 ### **http://localhost:8080**
 
@@ -89,6 +94,11 @@ mysql -uroot -P3305 --protocol TCP
 
 # References
 * [Spring Boot](https://spring.io/projects/spring-boot)
+* [Vue](https://vuejs.org/)
 * [Swagger UI](https://swagger.io/tools/swagger-ui/)
+* [Docker](https://www.docker.com/)
+* [Heroku](https://www.heroku.com/what)
+* [Skdman](https://sdkman.io/)
+
 
 
